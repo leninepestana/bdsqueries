@@ -408,7 +408,8 @@ public class Uri2602Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		List<CustomerNameProjection> list = customerRepository.search1("rs");
-		List<CustomerNameMinDTO> result1 = list.stream().map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
+		List<CustomerNameMinDTO> result1 = list.stream()
+              .map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
 		
 		System.out.println("\n*** RESULT SQL PROJECTION");
 		
