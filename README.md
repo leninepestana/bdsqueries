@@ -242,7 +242,7 @@ public class CustomerNameMinDTO implements Serializable {
 		
 }
 ```
-In the main application class, to represent this, I have to transform the *CustomerNameMinProjection* list into a CustomerNameMinDTO list as in the code above
+In the main application class, to represent this, I have to transform the *CustomerNameMinProjection* list into a *CustomerNameMinDTO* list as in the code above
 
 ```java
 List<CustomerNameProjection> list = customerRepository.search1("RS");
