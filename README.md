@@ -479,3 +479,107 @@ CustomerNameMinDTO [name=Pedro Augusto da Rocha]
 CustomerNameMinDTO [name=Jane Ester]
 CustomerNameMinDTO [name=Marcos Antônio dos Santos]
 ```
+
+### Lesson 05-09 URI 2611 Elaborate the query
+
+Problem from https://www.beecrowd.com.br/judge/en/problems/view/2611
+
+Project uri2611 is already started with the main Uri2602 Application class, the Movie, and Genre class, the application.properties with dev profile configured and also application-dev.properties.
+
+
+### Action Movies
+
+A video store contractor hired her services to catalog her movies. They need you to select the code and the name of the movies whose description of the genre is 'Action'.
+
+movies table:
+
+| **id** | **name**                     | **id_genres** |
+|--------|------------------------------|---------------|
+|    1   | Batman                       |       3       |
+|    2   | The Battle of the Dark River |       3       |
+|    3   | White Duck                   |       1       |
+|    4   | Breaking Barriers            |       4       |
+|    5   | The Two Hours                |       2       |
+
+genres table:
+
+| **id** | **description** |
+|--------|-----------------|
+|    1   | Animation       |
+|    2   | Horror          |
+|    3   | Action          |
+|    4   | Drama           |
+|    5   | Comedy          |
+
+
+Output Sample:
+
+| **id** | **name**                     |
+|--------|------------------------------|
+|    1   | Batman                       |
+|    2   | The Battle of the Dark River |
+
+
+```sql
+CREATE TABLE genres (
+  id numeric PRIMARY KEY,
+  description varchar(50)
+);
+
+CREATE TABLE movies (
+  id numeric PRIMARY KEY,
+  name varchar(50),
+  id_genres numeric REFERENCES genres (id)
+);
+
+INSERT INTO genres (id, description)
+VALUES
+  (1,'Animation'),
+  (2,'Horror'),
+  (3,'Action'),
+  (4,'Drama'),
+  (5,'Comedy');
+  
+INSERT INTO movies (id, name, id_genres)
+VALUES
+  (1,'Batman',3),
+  (2,'The Battle of the Dark River',3),
+  (3,'White Duck',1),
+  (4,'Breaking Barriers',4),
+  (5,'The Two Hours',2);
+```
+
+I will use the INNER JOIN keyword that is, because it selects records that have matching values in both tables
+
+Query all the movies, and genre tables data with INNER JOIN
+
+```sql
+SELECT *
+FROM movies
+INNER JOIN genres 
+ON movies.id_genres = genres.id
+```
+
+| **id** | **name**                     | **id_genres** | **id-2** | **description** |
+|--------|------------------------------|---------------|----------|-----------------|
+|    1   | Batman                       |       3       |     3    | Action          |
+|    2   | The Battle of the Dark River |       3       |     3    | Action          |
+|    3   | White Duck                   |       1       |     1    | Animation       |
+|    4   | Breaking Barriers            |       4       |     4    | Drama           |
+|    5   | The Two Hours                |       2       |     2    | Horror          |
+
+Query movies id, name, fields on movies table, where genre are equal to Action
+
+```sql
+SELECT movies.id, movies.name
+FROM movies
+INNER JOIN genres 
+ON movies.id_genres = genres.id
+WHERE genres.description = 'Action'
+```
+
+
+| **id** | **name**                     |
+|--------|------------------------------|
+|    1   | Batman                       |
+|    2   | The Battle of the Dark River |
