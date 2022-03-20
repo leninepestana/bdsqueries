@@ -252,7 +252,7 @@ List<CustomerNameMinDTO> result1 = list.stream()
 
 With the *CustomerNameMinDTO* list implemented I can now loop on top of the DTO as like in the code below and have the same result
 
-```code
+```java
 for (CustomerNameMinDTO obj : result1) {
   System.out.println(obj.getName());
 }
