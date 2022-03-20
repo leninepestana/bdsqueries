@@ -375,8 +375,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 			+ "WHERE UPPER(obj.state) = UPPER(:state)")
 	List<CustomerNameMinDTO> search2(String state);
 }
-List<CustomerNameMinDTO> search2(String state);
-}
 ```
 
 Main class final code
