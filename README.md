@@ -330,11 +330,11 @@ To make the equivalent of the *SQL* query in *JPQL* I have to give the object ni
 If it were to query the entities in the database, that is, just the *Customer*, the query could be done as follows
 
 ```sql
-	@Query(value = "SELECT obj "
-			+ "FROM customers "
-			+ "WHERE UPPER(state) = UPPER(:state)")
-	List<Customer> search2(String state);
-  ```
+@Query(value = "SELECT obj "
+		+ "FROM customers "
+		+ "WHERE UPPER(state) = UPPER(:state)")
+List<Customer> search2(String state);
+```
   But what I want is a Database Projection, that is, just the database name field in this case, a *DTO* that has only the name
 
   In this case I have to specify the full path of the *DTO* in the query, creating a new object of the *DTO* passing the constructor from the *CustomerNameMinDTO* class, and then accessing the *name* through the nickname *obj* in this case
