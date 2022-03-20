@@ -484,8 +484,6 @@ CustomerNameMinDTO [name=Marcos Antônio dos Santos]
 
 Problem from https://www.beecrowd.com.br/judge/en/problems/view/2611
 
-Project uri2611 is already started with the main Uri2602 Application class, the Movie, and Genre class, the application.properties with dev profile configured and also application-dev.properties.
-
 
 ### Action Movies
 
