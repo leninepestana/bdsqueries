@@ -23,7 +23,7 @@ WHERE state = 'RS'
 
 > Important note - Customer class variables must be created based on the SQL below.
 
-> Important note - The ID is not incremental, so we just represent as @Id on the Customer class 
+> Important note - The ID is not incremental, so we just represent as @Id on the Customer class.
 
 ```SQL
 CREATE TABLE customers (
@@ -130,11 +130,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 }
 ```
 
-To test the application I will test it in the main class, with the CommandLineRunner
+To test the application I will test it in the main class, with the *CommandLineRunner*
 
 The code placed inside the run method will be executed right at the beginning of the application
 
-I will do a call from here to CustomerRepository to return the database querie as we can see with line below passing the value *RS* in the argument of the search
+I will do a call from here to *CustomerRepository* to return the database query as we can see with line below passing the value *RS* in the argument of the search
 
 ```code
 List<CustomerNameProjection> list = customerRepository.search1("RS");
@@ -201,7 +201,7 @@ In a practical use, on the web, I will need to use **DTO** and not **Projection*
 
 The **DTO** will return the result to the **controller** and the **controller** will return to the **API**
 
-The code below represents the implementation of CustomerNameMinDTO class
+The code below represents the implementation of *CustomerNameMinDTO* class
 
 ```java
 package com.devsuperior.uri2602.dto;
@@ -243,14 +243,14 @@ public class CustomerNameMinDTO implements Serializable {
 ```
 In the main application class, to represent this, I have to transform the CustomerNameMinProjection list into a CustomerNameMinDTO list as in the code above
 
-```java
+```code
 List<CustomerNameProjection> list = customerRepository.search1("RS");
 List<CustomerNameMinDTO> result1 = list.stream().map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
 ```
 
 With the *CustomerNameMinDTO* list implemented I can now loop on top of the DTO as like in the code below and have the same result
 
-```java
+```code
 for (CustomerNameMinDTO obj : result1) {
   System.out.println(obj.getName());
 }
