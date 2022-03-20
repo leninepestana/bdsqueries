@@ -314,7 +314,7 @@ Query the database with JPQL support
 
 >Important note: To prevent problems in searches, related to the values entered by the user, I can use the UPPER or LOWER function
 
-```code
+```sql
 @Query(nativeQuery = true, value = "SELECT name "
 			+ "FROM customers "
 			+ "WHERE UPPER(state) = UPPER(:state)")
@@ -329,7 +329,7 @@ To make the equivalent of the *SQL* query in *JPQL* I have to give the object ni
 
 If it were to query the entities in the database, that is, just the *Customer*, the query could be done as follows
 
-```code
+```sql
 	@Query(value = "SELECT obj "
 			+ "FROM customers "
 			+ "WHERE UPPER(state) = UPPER(:state)")
@@ -343,7 +343,7 @@ If it were to query the entities in the database, that is, just the *Customer*, 
 
   The ***JPA SQL*** query will look like this
 
-  ```code
+  ```sql
   @Query(value = "SELECT new com.devsuperior.uri2602.dto.CustomerNameMinDTO(obj.name) "
 			+ "FROM Customer obj "
 			+ "WHERE UPPER(obj.state) = UPPER(:state)")
