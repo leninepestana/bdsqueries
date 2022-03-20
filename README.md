@@ -131,7 +131,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 }
 ```
 
-To test the application I will test it in the main class, with the *CommandLineRunner*
+To test the application I will access the main class, and use the *CommandLineRunner*
 
 The code placed inside the run method will be executed right at the beginning of the application
 
@@ -242,7 +242,7 @@ public class CustomerNameMinDTO implements Serializable {
 		
 }
 ```
-In the main application class, to represent this, I have to transform the CustomerNameMinProjection list into a CustomerNameMinDTO list as in the code above
+In the main application class, to represent this, I have to transform the *CustomerNameMinProjection* list into a CustomerNameMinDTO list as in the code above
 
 ```java
 List<CustomerNameProjection> list = customerRepository.search1("RS");
