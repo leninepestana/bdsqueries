@@ -331,8 +331,8 @@ If it were to query the entities in the database, that is, just the *Customer*, 
 
 ```sql
 @Query(value = "SELECT obj "
-		+ "FROM customers "
-		+ "WHERE UPPER(state) = UPPER(:state)")
+	+ "FROM customers "
+	+ "WHERE UPPER(state) = UPPER(:state)")
 List<Customer> search2(String state);
 ```
   But what I want is a Database Projection, that is, just the database name field in this case, a *DTO* that has only the name
@@ -343,12 +343,12 @@ List<Customer> search2(String state);
 
   The ***JPA SQL*** query will look like this
 
-  ```sql
-  @Query(value = "SELECT new com.devsuperior.uri2602.dto.CustomerNameMinDTO(obj.name) "
-			+ "FROM Customer obj "
-			+ "WHERE UPPER(obj.state) = UPPER(:state)")
-	List<Customer> search2(String state);
-  ```
+```sql
+@Query(value = "SELECT new com.devsuperior.uri2602.dto.CustomerNameMinDTO(obj.name) "
+		+ "FROM Customer obj "
+		+ "WHERE UPPER(obj.state) = UPPER(:state)")
+List<Customer> search2(String state);
+```
 ***CustomerRepository*** class complete code
 
 ```java
