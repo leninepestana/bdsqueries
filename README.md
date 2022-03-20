@@ -586,6 +586,6 @@ WHERE genres.description = 'Action'
 ### Lesson 05-10 URI 2611 Spring Boot SQL e JPQL
 
 
-<p align="center">
+<p align="left">
 <img src="https://user-images.githubusercontent.com/22635013/159188024-3b582fb7-d227-4c2a-aab3-08d04d9ee0fc.png">
 </p>
