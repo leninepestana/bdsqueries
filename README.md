@@ -244,7 +244,7 @@ public class CustomerNameMinDTO implements Serializable {
 ```
 In the main application class, to represent this, I have to transform the CustomerNameMinProjection list into a CustomerNameMinDTO list as in the code above
 
-```code
+```java
 List<CustomerNameProjection> list = customerRepository.search1("RS");
 List<CustomerNameMinDTO> result1 = list.stream()
                 .map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
