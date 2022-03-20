@@ -7,6 +7,7 @@ This study is part of Chapter 5 of DevSuperior Spring React Bootcamp tracks, whi
 
 ## Disclaimer
 https://www.beecrowd.com.br/
+
 ### Lesson 05-07 URI 2602 Spring Boot SQL
 
 Project uri2602 is already started with the main ***Uri2602*** Application class, the ***Customer*** Entity, the ***application.properties*** with dev profile configured and also ***application-dev.properties***.
@@ -305,3 +306,175 @@ public class Uri2602Application implements CommandLineRunner {
 
 ```
 
+### Lesson 05-08 URI 2602 Spring Boot JPQL
+
+Query the database with JPQL support
+
+>Important note: To prevent problems in searches, related to the values entered by the user, I can use the UPPER or LOWER function
+
+```code
+@Query(nativeQuery = true, value = "SELECT name "
+			+ "FROM customers "
+			+ "WHERE UPPER(state) = UPPER(:state)")
+List<CustomerNameProjection> search1(String state);
+```
+
+In the same way I did before for the native ***SQL*** query, I will define in the *CustomerRepository* class, the ***JPQL*** query
+
+***JPQL*** query don't need *Projection*, I can directly return *DTO*
+
+To make the equivalent of the *SQL* query in *JPQL* I have to give the object nickname, here in this case, instead of being *"FROM customers"* I will put *"FROM Customer obj"*, which is exactly the name of the class and its nickname which is *obj* in this case
+
+If it were to query the entities in the database, that is, just the *Customer*, the query could be done as follows
+
+```code
+	@Query(value = "SELECT obj "
+			+ "FROM customers "
+			+ "WHERE UPPER(state) = UPPER(:state)")
+	List<Customer> search2(String state);
+  ```
+  But what I want is a Database Projection, that is, just the database name field in this case, a *DTO* that has only the name
+
+  In this case I have to specify the full path of the *DTO* in the query, creating a new object of the *DTO* passing the constructor from the *CustomerNameMinDTO* class, and then accessing the *name* through the nickname *obj* in this case
+
+  The *WHERE* clause must also be changed, now I access the *state* with *obj* nickname
+
+  The ***JPA SQL*** query will look like this
+
+  ```code
+  @Query(value = "SELECT new com.devsuperior.uri2602.dto.CustomerNameMinDTO(obj.name) "
+			+ "FROM Customer obj "
+			+ "WHERE UPPER(obj.state) = UPPER(:state)")
+	List<Customer> search2(String state);
+  ```
+***CustomerRepository*** class complete code
+
+```java
+package com.devsuperior.uri2602.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.devsuperior.uri2602.dto.CustomerNameMinDTO;
+import com.devsuperior.uri2602.entities.Customer;
+import com.devsuperior.uri2602.projections.CustomerNameProjection;
+
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+
+	@Query(nativeQuery = true, value = "SELECT name "
+			+ "FROM customers "
+			+ "WHERE UPPER(state) = UPPER(:state)")
+	List<CustomerNameProjection> search1(String state);
+
+	@Query(value = "SELECT new com.devsuperior.uri2602.dto.CustomerNameMinDTO(obj.name) "
+			+ "FROM Customer obj "
+			+ "WHERE UPPER(obj.state) = UPPER(:state)")
+	List<CustomerNameMinDTO> search2(String state);
+}
+List<CustomerNameMinDTO> search2(String state);
+}
+```
+
+Main class final code
+
+```java
+package com.devsuperior.uri2602;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.devsuperior.uri2602.dto.CustomerNameMinDTO;
+import com.devsuperior.uri2602.projections.CustomerNameProjection;
+import com.devsuperior.uri2602.repositories.CustomerRepository;
+
+@SpringBootApplication
+public class Uri2602Application implements CommandLineRunner {
+	
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(Uri2602Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		
+		List<CustomerNameProjection> list = customerRepository.search1("rs");
+		List<CustomerNameMinDTO> result1 = list.stream().map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
+		
+		System.out.println("\n*** RESULT SQL PROJECTION");
+		
+		for (CustomerNameProjection obj : list) {
+			System.out.println(obj.getName());
+		}
+		
+		System.out.println("\n\n");
+		
+		System.out.println("\n*** RESULT ROOT SQL DTO");
+		
+		for (CustomerNameMinDTO obj : result1) {
+			System.out.println(obj.getName());
+		}
+		
+		System.out.println("\n\n");
+		
+		List<CustomerNameMinDTO> result2 = customerRepository.search2("RS");
+		
+		System.out.println("\n*** RESULT JPQL");
+		
+		for (CustomerNameMinDTO obj : result2) {
+			System.out.println(obj);
+		}
+		
+	}
+
+}
+```
+
+Result:
+
+```code
+Hibernate: 
+    SELECT
+        name 
+    FROM
+        customers 
+    WHERE
+        UPPER(state) = UPPER(?)
+
+*** RESULT SQL PROJECTION
+Pedro Augusto da Rocha
+Jane Ester
+Marcos Antônio dos Santos
+
+
+
+
+*** RESULT SQL DTO
+Pedro Augusto da Rocha
+Jane Ester
+Marcos Antônio dos Santos
+
+
+
+Hibernate: 
+    select
+        customer0_.name as col_0_0_ 
+    from
+        customers customer0_ 
+    where
+        upper(customer0_.state)=upper(?)
+
+*** RESULT JPQL
+CustomerNameMinDTO [name=Pedro Augusto da Rocha]
+CustomerNameMinDTO [name=Jane Ester]
+CustomerNameMinDTO [name=Marcos Antônio dos Santos]
+```
