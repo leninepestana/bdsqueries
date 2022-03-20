@@ -246,7 +246,8 @@ In the main application class, to represent this, I have to transform the Custom
 
 ```code
 List<CustomerNameProjection> list = customerRepository.search1("RS");
-List<CustomerNameMinDTO> result1 = list.stream().map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
+List<CustomerNameMinDTO> result1 = list.stream()
+                .map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
 ```
 
 With the *CustomerNameMinDTO* list implemented I can now loop on top of the DTO as like in the code below and have the same result
