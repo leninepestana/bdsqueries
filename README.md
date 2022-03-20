@@ -587,5 +587,5 @@ WHERE genres.description = 'Action'
 
 
 <p align="left">
-<img src="https://user-images.githubusercontent.com/22635013/159188024-3b582fb7-d227-4c2a-aab3-08d04d9ee0fc.png">
+<img src="https://user-images.githubusercontent.com/22635013/159188266-4e2a5ef8-cdfa-475b-a009-d02f1aac618d.png">
 </p>
