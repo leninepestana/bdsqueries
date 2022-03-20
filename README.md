@@ -76,9 +76,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 ```
 Step 2 - Create a projection
 
-The query we want to make, makes a projection with only the name field.
+The query I want to make, makes a projection with only the name field.
 
-One way to access the database and select only those fields that we need is to define a projection, in the Spring Boot project.
+One way to access the database and select only those fields that I need is to define a projection, in the Spring Boot project.
 
 The projection class, is an interface, only with the signature of the methods.
 
@@ -92,15 +92,15 @@ public interface CustomerNameProjection {
 ```
 Step 3 - Update repository class
 
-With the Projection implemented, we must update the repository class
+With the *Projection* implemented, I must update the repository class.
 
-The query line below specify a native SQL querie
+The query line below specify a native SQL query.
 
 ```code
 @Query(nativeQuery = true)
 ```
-Then we must specify the SQL querie in the *value* field
-> Important note: We must not forget that we must leave a space in the last word because of concatenation of the bottom line
+Then I must specify the SQL query in the *value* field.
+> Important note: I must not forget that I must leave a space in the last word because of concatenation of the bottom line.
 
 
 ```code
@@ -109,7 +109,7 @@ Then we must specify the SQL querie in the *value* field
                   + "WHERE state = :state")
 ```
 
-The value *:state* on the querie from above must be the same word as in the argument search
+The value *:state* on the query from above must be the same word as in the argument search.
 
 ```java
 package com.devsuperior.uri2602.repositories;
@@ -131,17 +131,17 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 }
 ```
 
-To test the application I will access the main class, and use the *CommandLineRunner*
+To test the application I will access the main class, and use the *CommandLineRunner*.
 
-The code placed inside the run method will be executed right at the beginning of the application
+The code placed inside the run method will be executed right at the beginning of the application.
 
-I will do a call from here to *CustomerRepository* to return the database query as we can see with line below passing the value *RS* in the argument of the search
+I will do a call from here to *CustomerRepository* to return the database query as we can see with line below passing the value *RS* in the argument of the search.
 
-```code
+```java
 List<CustomerNameProjection> list = customerRepository.search1("RS");
 ```
 
-Then I'll make a loop, and for each *CustomerNameProjection obj* inside the *list* I'll print the *obj.getName()*
+Then I'll make a loop, and for each *CustomerNameProjection obj* inside the *list* I'll print the *obj.getName()*.
 
 
 
@@ -181,7 +181,7 @@ public class Uri2602Application implements CommandLineRunner {
 
 }
 ```
-The *CustomerNameProjection* is an interface that has the *getName()* method, and when I do a search in the *CustomerRepository* returning the interface the *Spring Data JPA* creates a **concret** object with the interface structure
+The *CustomerNameProjection* is an interface that has the *getName()* method, and when I do a search in the *CustomerRepository* returning the interface the *Spring Data JPA* creates a **concret** object with the interface structure.
 
 Result:
 
@@ -198,11 +198,11 @@ Jane Ester
 Marcos Antônio dos Santos
 ```
 
-In a practical use, on the web, I will need to use **DTO** and not **Projection**
+In a practical use, on the web, I will need to use **DTO** and not **Projection**.
 
-The **DTO** will return the result to the **controller** and the **controller** will return to the **API**
+The **DTO** will return the result to the **controller** and the **controller** will return to the **API**.
 
-The code below represents the implementation of *CustomerNameMinDTO* class
+The code below represents the implementation of *CustomerNameMinDTO* class.
 
 ```java
 package com.devsuperior.uri2602.dto;
@@ -242,7 +242,7 @@ public class CustomerNameMinDTO implements Serializable {
 		
 }
 ```
-In the main application class, to represent this, I have to transform the *CustomerNameMinProjection* list into a *CustomerNameMinDTO* list as in the code above
+In the main application class, to represent this, I have to transform the *CustomerNameMinProjection* list into a *CustomerNameMinDTO* list as in the code above.
 
 ```java
 List<CustomerNameProjection> list = customerRepository.search1("RS");
@@ -250,7 +250,7 @@ List<CustomerNameMinDTO> result1 = list.stream()
                 .map(x -> new CustomerNameMinDTO(x)).collect(Collectors.toList());
 ```
 
-With the *CustomerNameMinDTO* list implemented I can now loop on top of the DTO as like in the code below and have the same result
+With the *CustomerNameMinDTO* list implemented I can now loop on top of the DTO as like in the code below and have the same result.
 
 ```java
 for (CustomerNameMinDTO obj : result1) {
@@ -258,7 +258,7 @@ for (CustomerNameMinDTO obj : result1) {
 }
 ```
 
-The final code from the application class is this one below
+The final code from the application class is this one below.
 
 ```java
 package com.devsuperior.uri2602;
@@ -312,7 +312,7 @@ public class Uri2602Application implements CommandLineRunner {
 
 Query the database with JPQL support
 
->Important note: To prevent problems in searches, related to the values entered by the user, I can use the UPPER or LOWER function
+>Important note: To prevent problems in searches, related to the values entered by the user, I can use the UPPER or LOWER function.
 
 ```sql
 @Query(nativeQuery = true, value = "SELECT name "
@@ -321,13 +321,13 @@ Query the database with JPQL support
 List<CustomerNameProjection> search1(String state);
 ```
 
-In the same way I did before for the native ***SQL*** query, I will define in the *CustomerRepository* class, the ***JPQL*** query
+In the same way I did before for the native ***SQL*** query, I will define in the *CustomerRepository* class, the ***JPQL*** query.
 
-***JPQL*** query don't need *Projection*, I can directly return *DTO*
+***JPQL*** query don't need *Projection*, I can directly return *DTO*.
 
-To make the equivalent of the *SQL* query in *JPQL* I have to give the object nickname, here in this case, instead of being *"FROM customers"* I will put *"FROM Customer obj"*, which is exactly the name of the class and its nickname which is *obj* in this case
+To make the equivalent of the *SQL* query in *JPQL* I have to give the object nickname, here in this case, instead of being *"FROM customers"* I will put *"FROM Customer obj"*, which is exactly the name of the class and its nickname which is *obj* in this case.
 
-If it were to query the entities in the database, that is, just the *Customer*, the query could be done as follows
+If it were to query the entities in the database, that is, just the *Customer*, the query could be done as follows.
 
 ```sql
 @Query(value = "SELECT obj "
@@ -335,13 +335,13 @@ If it were to query the entities in the database, that is, just the *Customer*, 
 	+ "WHERE UPPER(state) = UPPER(:state)")
 List<Customer> search2(String state);
 ```
-  But what I want is a Database Projection, that is, just the database name field in this case, a *DTO* that has only the name
+  But what I want is a Database Projection, that is, just the database name field in this case, a *DTO* that has only the name.
 
-  In this case I have to specify the full path of the *DTO* in the query, creating a new object of the *DTO* passing the constructor from the *CustomerNameMinDTO* class, and then accessing the *name* through the nickname *obj* in this case
+  In this case I have to specify the full path of the *DTO* in the query, creating a new object of the *DTO* passing the constructor from the *CustomerNameMinDTO* class, and then accessing the *name* through the nickname *obj* in this case.
 
-  The *WHERE* clause must also be changed, now I access the *state* with *obj* nickname
+  The *WHERE* clause must also be changed, now I access the *state* with *obj* nickname.
 
-  The ***JPA SQL*** query will look like this
+  The ***JPA SQL*** query will look like this:
 
 ```sql
 @Query(value = "SELECT new com.devsuperior.uri2602.dto.CustomerNameMinDTO(obj.name) "
@@ -349,7 +349,7 @@ List<Customer> search2(String state);
 		+ "WHERE UPPER(obj.state) = UPPER(:state)")
 List<Customer> search2(String state);
 ```
-***CustomerRepository*** class complete code
+***CustomerRepository*** class complete code:
 
 ```java
 package com.devsuperior.uri2602.repositories;
@@ -377,7 +377,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 }
 ```
 
-Main class final code
+Main class final code:
 
 ```java
 package com.devsuperior.uri2602;
