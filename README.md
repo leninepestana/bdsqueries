@@ -698,11 +698,11 @@ public class Genre {
 
 #### Movie
 
-As the SQL says the *movies* table must be created and will have an *id*,  *name*, and *id_genres*. 
+As the SQL says the ***movies*** table must be created and will have an ***id***,  ***name***, and ***id_genres***. 
 
-The  *id_genres* will be the association with two tables. 
+The  ***id_genres*** will be the association with two tables. 
 
-The Movie class has a many-to-one association, which should be identified with the *genre* in the *id_genres* field of the table and by the *Genre genre* as type.
+The ***Movie*** class has a ***many-to-one*** association, which should be identified with the ***genre*** in the ***id_genres*** field of the table and by the ***Genre genre*** as type.
 
 ```java
 package com.devsuperior.uri2611.entities;
