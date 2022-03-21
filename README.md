@@ -36,7 +36,6 @@ Output Sample
 | Jane Ester                |
 | Marcos Antônio dos Santos |
 
-Then, you must show the names of all customers whose state is 'RS'.
 
 
 Project uri2602 is already started with the main ***Uri2602*** Application class, the ***Customer*** Entity, the ***application.properties*** with dev profile configured and also ***application-dev.properties***.
