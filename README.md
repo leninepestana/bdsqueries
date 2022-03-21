@@ -642,11 +642,11 @@ CREATE TABLE movies (
 #### Genre
 As the SQL says, the table I have to create will be called *genres*.
 
-So the class ***Genre*** must have an *id*, and a *description* variables. 
+So the class ***Genre*** must have an ***id***, and a ***description*** variables. 
 
-From the diagram above, I can see that the Genre class has a one-to-many association that is identified by *genre*. 
+From the diagram above, I can see that the ***Genre*** class has a ***one-to-many*** association that is identified by ***genre***. 
 
-The Genre class should have a list of movies, as it is a one-to-many association and will be mapped with *movies*
+The ***Genre*** class should have a ***List of movies***, as it is a ***one-to-many*** association and will be mapped with ***movies***
 
 ```java
 package com.devsuperior.uri2611.entities;
