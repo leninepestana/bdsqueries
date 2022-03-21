@@ -592,7 +592,7 @@ WHERE genres.description = 'Action'
 
 Now that I have the query result for URI 2611, I will implement this in Spring Boot.
 
-The project has already started, with the Gender and Cinema Entities.
+The project has already started, with the Gender and Movie Entities.
 
 To represent the entities I must first look at the SQL and identify the queries first so that I can build the Genre an Movie classes.
 
