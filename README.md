@@ -589,3 +589,139 @@ WHERE genres.description = 'Action'
 <p align="left">
 <img src="https://user-images.githubusercontent.com/22635013/159188266-4e2a5ef8-cdfa-475b-a009-d02f1aac618d.png">
 </p>
+
+Now that I have the query result for URI 2611, I will implement this in Spring Boot.
+
+The project has already started, with the Gender and Cinema Entities.
+
+To represent the entities I must first look at the SQL and identify the queries first so that I can build the Genre an Movie classes.
+
+#### Create the Genre and Movies classes
+
+```sql
+CREATE TABLE genres (
+  id numeric PRIMARY KEY,
+  description varchar(50)
+);
+```
+```sql
+CREATE TABLE movies (
+  id numeric PRIMARY KEY,
+  name varchar(50),
+  id_genres numeric REFERENCES genres (id)
+);
+```
+#### Genre
+As the SQL says, the table I have to create will be called *genres*.
+
+So the class Genre must have an *id*, and a *description* variables. 
+
+From the diagram above, I can see that the Genre class has a one-to-many association that is identified by *genre*. 
+
+The Genre class should have a list of movies, as it is a one-to-many association and will be mapped with *movies*
+
+```java
+package com.devsuperior.uri2611.entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "genres")
+public class Genre {
+
+	@Id
+	private Long id;
+	private String description;
+	
+	@OneToMany(mappedBy = "genre")
+	private List<Movie> movies = new ArrayList<>();
+	
+	public Genre() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<Movie> getMovies() {
+		return movies;
+	}
+}
+```
+
+
+#### Movie
+
+As the SQL says the *movies* table must be created and will have an *id*,  *name*, and *id_genres*. 
+
+The  *id_genres* will be the association with two tables. 
+
+The Movie class has a many-to-one association, which should be identified with the *genre* in the *id_genres* field of the table and by the *Genre genre* as type.
+
+```java
+package com.devsuperior.uri2611.entities;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "movies")
+public class Movie {
+
+	@Id
+	private Long id;
+	private String name;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_genres")
+	private Genre genre;
+	
+	public Movie() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public void setGenre(Genre genre) {
+		this.genre = genre;
+	}
+}
+```
