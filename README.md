@@ -879,7 +879,8 @@ public class Uri2611Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		List<MovieMinProjection> list = movieRepository.search1("Action");
-		List<MovieMinDTO> result1 = list.stream().map(x -> new MovieMinDTO(x)).collect(Collectors.toList());
+		List<MovieMinDTO> result1 = list.stream()
+					.map(x -> new MovieMinDTO(x)).collect(Collectors.toList());
 		
 		System.out.println("\n*** RESULT NATIVE SQL");
 		
