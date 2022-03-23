@@ -705,6 +705,8 @@ The  ***id_genres*** will be the association with two tables.
 
 The ***Movie*** class has a ***many-to-one*** association, which should be identified with the ***genre*** in the ***id_genres*** field of the table and by the ***Genre genre*** as type.
 
+Movie class
+
 ```java
 package com.devsuperior.uri2611.entities;
 
@@ -754,6 +756,172 @@ public class Movie {
 	}
 }
 ```
+MovieMinProjection class
+
+```java
+package com.devsuperior.uri2611.projections;
+
+public interface MovieMinProjection {
+	
+	Long getId();
+	String getName();
+}
+```
+MovieMinDTO class
+
+```java
+package com.devsuperior.uri2611.dto;
+
+import java.io.Serializable;
+
+import com.devsuperior.uri2611.projections.MovieMinProjection;
+
+public class MovieMinDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	private Long id;
+	private String name;
+	
+	public MovieMinDTO() {
+	}
+	
+	public MovieMinDTO(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	public MovieMinDTO(MovieMinProjection projection) {
+		id = projection.getId();
+		name = projection.getName();
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "MovieNinDTO [" + id + " - " + name + "]";
+	}
+	
+}
+```
+MovieRepository class
+
+```java
+package com.devsuperior.uri2611.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.devsuperior.uri2611.dto.MovieMinDTO;
+import com.devsuperior.uri2611.entities.Movie;
+import com.devsuperior.uri2611.projections.MovieMinProjection;
+
+public interface MovieRepository extends JpaRepository<Movie, Long> {
+
+	@Query(nativeQuery = true, value = "SELECT movies.id, movies.name "
+			+ "FROM movies "
+			+ "INNER JOIN genres "
+			+ "ON movies.id_genres = genres.id "
+			+ "WHERE UPPER(genres.description) = UPPER(:genre)")
+	List<MovieMinProjection> search1(String genre);
+	
+	@Query(value = "SELECT new com.devsuperior.uri2611.dto.MovieMinDTO(obj.id, obj.name) "
+			+ "FROM Movie obj "
+			+ "WHERE UPPER(obj.genre.description) = UPPER(:genre)")
+	List<MovieMinDTO> search2(String genre);
+	
+}
+```
+Application runner class
+
+```java
+package com.devsuperior.uri2611;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.devsuperior.uri2611.dto.MovieMinDTO;
+import com.devsuperior.uri2611.projections.MovieMinProjection;
+import com.devsuperior.uri2611.repositories.MovieRepository;
+
+@SpringBootApplication
+public class Uri2611Application implements CommandLineRunner {
+	
+	@Autowired
+	private MovieRepository movieRepository;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(Uri2611Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		
+		List<MovieMinProjection> list = movieRepository.search1("Action");
+		List<MovieMinDTO> result1 = list.stream().map(x -> new MovieMinDTO(x)).collect(Collectors.toList());
+		
+		System.out.println("\n*** RESULT NATIVE SQL");
+		
+		for (MovieMinProjection obj : list) {
+			System.out.println(obj.getId() + " - " + obj.getName());
+		}
+		
+		System.out.println("\n*** RESULT JPQL");
+		
+		for (MovieMinDTO obj : result1) {
+			System.out.println(obj.getId() + " - " + obj.getName());
+		}
+	}
+}
+```
+Result:
+
+```code
+Hibernate: 
+    SELECT
+        movies.id,
+        movies.name 
+    FROM
+        movies 
+    INNER JOIN
+        genres 
+            ON movies.id_genres = genres.id 
+    WHERE
+        UPPER(genres.description) = UPPER(?)
+
+*** RESULT NATIVE SQL
+1 - Batman
+2 - The Battle of the Dark River
+
+*** RESULT JPQL
+1 - Batman
+2 - The Battle of the Dark River
+```
+
+
+
+
 ### 05-11 URI 2621 Preparing the query
 
 #### Amounts Between 10 and 20
