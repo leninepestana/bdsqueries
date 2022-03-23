@@ -1097,7 +1097,8 @@ public class Uri2621Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		List<ProductMinProjection> list = productRepository.search1(10, 20, "P");
-		List<ProductMinDTO> result1 = list.stream().map(x -> new ProductMinDTO(x)).collect(Collectors.toList());
+		List<ProductMinDTO> result1 = list.stream()
+				.map(x -> new ProductMinDTO(x)).collect(Collectors.toList());
 		
 		System.out.println("\n*** RESULT NATIVE SQL");
 		
