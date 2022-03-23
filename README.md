@@ -833,3 +833,6 @@ AND providers.name LIKE 'P%';
 
 ### 05-12 URI 2621 Spring Boot SQL and JPQL
 
+<p align="left">
+<src img="https://user-images.githubusercontent.com/22635013/159664920-04de159f-841b-46a0-b250-98dd4a85f47d.png">
+</p>
