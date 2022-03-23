@@ -35,6 +35,7 @@ public class Uri2611Application implements CommandLineRunner {
 		}
 		
 		System.out.println("\n*** RESULT JPQL");
+		
 		for (MovieMinDTO obj : result1) {
 			System.out.println(obj.getId() + " - " + obj.getName());
 		}
