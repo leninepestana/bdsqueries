@@ -839,3 +839,320 @@ Conceptual model
 <p align="left">
 <img src="https://user-images.githubusercontent.com/22635013/159665703-4f378a24-56d1-4dd7-b2ad-a3a24e3e4bf0.png">
 </p>
+
+Product class
+
+```java
+package com.devsuperior.uri2621.entities;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "products")
+public class Product {
+
+	@Id
+	private Long id;
+	private String name;
+	private Integer amount;
+	private Double price;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_providers")
+	private Provider provider;
+	
+	public Product() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Provider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
+	}
+}
+```
+
+Provider class
+
+```java
+package com.devsuperior.uri2621.entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "providers")
+public class Provider {
+
+	@Id
+	private Long id;
+	private String name;
+	private String street;
+	private String city;
+	private String state;
+	
+	@OneToMany(mappedBy = "provider")
+	private List<Product> products = new ArrayList<>();
+	
+	public Provider() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+}
+```
+
+ProductMinProjection interface
+
+```java
+package com.devsuperior.uri2621.projections;
+
+public interface ProductMinProjection {
+	
+	String getName();
+}
+
+```
+ProductMinDTO class
+
+
+```java
+package com.devsuperior.uri2621.dto;
+
+import com.devsuperior.uri2621.projections.ProductMinProjection;
+
+public class ProductMinDTO {
+
+		private String name;
+		
+		public ProductMinDTO() {
+		}
+		
+		public ProductMinDTO(String name) {
+			this.name = name;
+		}
+		
+		public ProductMinDTO(ProductMinProjection projection) {
+			name = projection.getName();
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String toString() {
+			return "[ProductName] " + name;
+		}
+}
+```
+
+
+ProductRepository class
+
+```java
+package com.devsuperior.uri2621.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.devsuperior.uri2621.dto.ProductMinDTO;
+import com.devsuperior.uri2621.entities.Product;
+import com.devsuperior.uri2621.projections.ProductMinProjection;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+	@Query(nativeQuery = true, value = "SELECT products.name "
+			+ "FROM products "
+			+ "INNER JOIN providers ON providers.id = products.id_providers "
+			+ "WHERE products.amount BETWEEN :min AND :max "
+			+ "AND providers.name LIKE CONCAT( :beginName, '%')")
+	List<ProductMinProjection> search1(Integer min, Integer max, String beginName);
+
+	@Query("SELECT new com.devsuperior.uri2621.dto.ProductMinDTO(obj.name) "
+			+ "FROM Product obj "
+			+ "WHERE obj.amount BETWEEN :min AND :max "
+			+ "AND obj.provider.name LIKE CONCAT( :beginName, '%')")
+	List<ProductMinDTO> search2(Integer min, Integer max, String beginName);
+}
+```
+Application runner class
+
+```java
+package com.devsuperior.uri2621;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.devsuperior.uri2621.dto.ProductMinDTO;
+import com.devsuperior.uri2621.projections.ProductMinProjection;
+import com.devsuperior.uri2621.repositories.ProductRepository;
+
+@SpringBootApplication
+public class Uri2621Application implements CommandLineRunner {
+
+	@Autowired
+	private ProductRepository productRepository;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(Uri2621Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		
+		List<ProductMinProjection> list = productRepository.search1(10, 20, "P");
+		List<ProductMinDTO> result1 = list.stream().map(x -> new ProductMinDTO(x)).collect(Collectors.toList());
+		
+		System.out.println("\n*** RESULT NATIVE SQL");
+		
+		for (ProductMinDTO obj : result1) {
+			System.out.println(obj);
+		}
+		
+		System.out.println("\n\n");
+		
+		List<ProductMinDTO> result2 = productRepository.search2(10, 20, "P");
+		
+		System.out.println("\n*** RESULT JPQL");
+		for (ProductMinDTO obj : result2) {
+			System.out.println(obj);
+		}
+	}
+}
+```
+
+Result:
+
+```code
+Hibernate: 
+    SELECT
+        products.name 
+    FROM
+        products 
+    INNER JOIN
+        providers 
+            ON providers.id = products.id_providers 
+    WHERE
+        products.amount BETWEEN ? AND ? 
+        AND providers.name LIKE CONCAT( ?, '%')
+
+*** RESULT NATIVE SQL
+[ProductName] Executive Chair
+
+
+
+Hibernate: 
+    select
+        product0_.name as col_0_0_ 
+    from
+        products product0_ cross 
+    join
+        providers provider1_ 
+    where
+        product0_.id_providers=provider1_.id 
+        and (
+            product0_.amount between ? and ?
+        ) 
+        and (
+            provider1_.name like (?||'%')
+        )
+
+*** RESULT JPQL
+[ProductName] Executive Chair
+```
