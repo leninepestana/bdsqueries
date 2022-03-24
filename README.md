@@ -1519,6 +1519,8 @@ providers table
 |    6   | Francisco Accerr | Av Paulista    | São Paulo      |     SP    |
 
 
+Output sample
+
 
 | **city**       |
 |----------------|
