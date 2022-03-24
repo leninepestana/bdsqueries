@@ -28,7 +28,7 @@ Tables
 |    4   | Jane Ester                | Av 7 de setembro         | Erechim        |     RS    |      800,00      |
 |    5   | Marcos Antônio dos Santos | Av Farrapos              | Porto Alegre   |     RS    |      4250,25     |
 
-Output Sample
+Output sample
 
 | **name**                  |
 |---------------------------|
@@ -538,7 +538,7 @@ genres table:
 |    5   | Comedy          |
 
 
-Output Sample:
+Output sample
 
 | **id** | **name**                     |
 |--------|------------------------------|
@@ -951,7 +951,7 @@ products
 |    4   | Executive Chair | 17         | 9.90      |         3        |
 |    5   | Solar Panel     | 30         | 3000.25   |         4        |
 
-Output Sample
+Output sample
 
 | **name**        |
 |-----------------|
@@ -1346,7 +1346,7 @@ customers table
 |    4   | Jane Ester                | Av 7 de setembro         | Erechim        |     RS    |      800,00      |
 |    5   | Marcos Antônio dos Santos | Av Farrapos              | Porto Alegre   |     RS    |      4250,25     |
 
-Output data
+Output sample
 
 | **name**                  |
 |---------------------------|
@@ -1409,7 +1409,7 @@ customers table
 |    5   | Marcos Antônio dos Santos | Av Farrapos              | Porto Alegre   |     RS    |      4250,25     |
 
 
-Output data
+Output sample
 
 | **name**                  | **street**               |
 |---------------------------|--------------------------|
@@ -1465,7 +1465,7 @@ products table
 |    5   | Chair             |    3000    |   210.64  |
 |    6   | Single bed        |     750    |     99    |
 
-Output Sample
+Output sample
 
 | **id** | **name**     |
 |--------|--------------|
