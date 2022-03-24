@@ -1330,6 +1330,18 @@ Hibernate:
 
 #### Group 1: projection, restriction (2602, 2603, 2604, 2607, 2608, 2615, 2624)
 
+#### Group 2: JOIN (2605, 2606, 2611, 2613, 2614, 2617, 2618, 2619, 2620, 2621, 2622, 2623, 2742)
+
+#### Group 3: GROUP BY, sub-queries (2609, 2993, 2994, 2995, 2996)
+
+#### Group 4: Expressions and projections (2610, 2625, 2738, 2739, 2741, 2743, 2744, 2745, 2746, 3001)
+
+#### Group 5: Difference, Union (2616, 2737, 2740, 2990)
+
+#### Group 6: Hard (2988, 2989, 2991, 2992, 2997, 2998, 2999)
+
+
+
 #### URI2602 Basic Select
 
 Your company is doing a survey of how many customers are registered in the states, however, lacked to raise the data of the state of the 'Rio Grande do Sul'.
@@ -1741,3 +1753,6 @@ VALUES
 SELECT COUNT(DISTINCT(customers.city))
 FROM customers
 ```
+
+#### Group 2: JOIN (2605, 2606, 2611, 2613, 2614, 2617, 2618, 2619, 2620, 2621, 2622, 2623, 2742)
+
