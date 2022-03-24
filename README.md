@@ -1326,7 +1326,7 @@ Hibernate:
 *** RESULT JPQL
 [ProductName] Executive Chair
 ```
-### 05-13 Dica - SQL pratice
+### 05-13 - SQL pratice
 
 #### Group 1: projection, restriction (2602, 2603, 2604, 2607, 2608, 2615, 2624)
 
