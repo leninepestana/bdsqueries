@@ -1355,6 +1355,8 @@ Output data
 | Marcos Antônio dos Santos |
 
 
+
+
 ```sql
 --- URI Online Judge SQL
 --- Copyright URI Online Judge
@@ -1497,3 +1499,77 @@ SELECT id, name FROM products
 WHERE price <10
 OR price >100;
 ```
+
+
+#### URI2607 - Providers' City in Alphabetical Order
+
+Every month the company asks for a report from the cities that providers are registered. So, do a query that returns all the cities of the providers, but in alphabetical order.
+
+OBS: You must not show repeated cities.
+
+providers table
+
+| **id** | **name**         | **street**     | **city**       | **state** |
+|--------|------------------|----------------|----------------|-----------|
+|    1   | Henrique         | Av Brasil      | Rio de Janeiro |     RJ    |
+|    2   | Marcelo Augusto  | Rua Imigrantes | Belo Horizonte |     MG    |
+|    3   | Caroline Silva   | Av São Paulo   | Salvador       |     BA    |
+|    4   | Guilerme Staff   | Rua Central    | Porto Alegre   |     RS    |
+|    5   | Isabela Moraes   | Av Juiz Grande | Curitiba       |     PR    |
+|    6   | Francisco Accerr | Av Paulista    | São Paulo      |     SP    |
+
+
+
+| **city**       |
+|----------------|
+| Belo Horizonte |
+| Curitiba       |
+| Porto Alegre   |
+| Rio de Janeiro |
+| Salvador       |
+| São Paulo      |
+
+
+```sql
+--- URI Online Judge SQL
+--- Copyright URI Online Judge
+--- www.urionlinejudge.com.br
+--- Problem 2607
+
+CREATE TABLE providers (
+  id numeric PRIMARY KEY,
+  name varchar(50),
+  street varchar(50),
+  city varchar(50),
+  state varchar(2)
+);
+
+INSERT INTO providers (id, name, street, city, state)
+VALUES 
+  (1, 'Henrique', 'Av Brasil', 'Rio de Janeiro', 'RJ'),
+  (2, 'Marcelo Augusto', 'Rua Imigrantes', 'Belo Horizonte', 'MG'),
+  (3, 'Caroline Silva', 'Av São Paulo', 'Salvador', 'BA'),
+  (4, 'Guilerme Staff',	'Rua Central',	'Porto Alegre',	'RS'),
+  (5, 'Isabela Moraes',	'Av Juiz Grande', 'Curitiba', 'PR'),
+  (6, 'Francisco Accerr', 'Av Paulista', 'São Paulo', 'SP');
+  
+  /*  Execute this query to drop the tables */
+  -- DROP TABLE providers; --
+    
+```
+
+```sql
+SELECT providers.city
+FROM providers
+ORDER BY providers.city ASC
+```
+
+
+
+#### URI2608
+
+
+#### URI2615
+
+
+#### URI2624
