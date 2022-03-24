@@ -1647,7 +1647,97 @@ Output sample
 | Várzea Grande |
 | Salvador      |
 
+```sql
+--- URI Online Judge SQL
+--- Copyright URI Online Judge
+--- www.urionlinejudge.com.br
+--- Problem 2615
+
+CREATE TABLE customers (
+  id numeric PRIMARY KEY,
+  name varchar(50),
+  street varchar(50),
+  city varchar(50)
+);
+
+
+INSERT INTO customers (id, name, street, city)
+VALUES
+  (1,	'Giovanna Goncalves Oliveira',	'Rua Mato Grosso',	'Canoas'),
+  (2, 'Kauã Azevedo Ribeiro',	'Travessa Ibiá',	'Uberlândia'),
+  (3,	'Rebeca Barbosa Santos',	'Rua Observatório Meteorológico',	'Salvador'),
+  (4,	'Sarah Carvalho Correia',	'Rua Antônio Carlos da Silva',	'Uberlândia'),
+  (5,	'João Almeida Lima',	'Rua Rio Taiuva',	'Ponta Grossa'),
+  (6,	'Diogo Melo Dias',	'Rua Duzentos e Cinqüenta',	'Várzea Grande');
+  
+
+/*  Execute this query to drop the tables */
+-- DROP TABLE customers; --
+```
+
+```sql
+SELECT DISTINCT customers.city
+FROM customers 
+ORDER BY customers.city ASC
+```
+
+#### URI2624 - Number of Cities per Customers
+
+The company board asked you for a simple report on how many cities the company has already reached.
+
+To do this you must display the number of distinct cities in the customers table.
+
+customers table
+
+| **id** | **name**                                | **street**                            | **city**      | **state** | **credit_limit** |
+|--------|-----------------------------------------|---------------------------------------|---------------|-----------|------------------|
+|    1   | Nicolas Diogo Cardoso                   | Acesso Um                             | Porto Alegre  |     RS    |        475       |
+|    2   | Cecília Olivia Rodrigues                | Rua Sizuka Usuy                       | Cianorte      |     PR    |       3170       |
+|    3   | Augusto Fernando Carlos Eduardo Cardoso | Rua Baldomiro Koerich                 | Palhoça       |     SC    |       1067       |
+|    4   | Nicolas Diogo Cardoso                   | Acesso Um                             | Porto Alegre  |     RS    |        475       |
+|    5   | Sabrina Heloisa Gabriela Barros         | Rua Engenheiro Tito Marques Fernandes | Porto Alegre  |     RS    |       4312       |
+|    6   | Joaquim Diego Lorenzo Araújo            | Rua Vitorino                          | Novo Hamburgo |     RS    |       2314       |
+
+
+Output sample
+
+| **count** |
+|-----------|
+| 4         |
 
 
 
-#### URI2624
+```sql
+--- URI Online Judge SQL
+--- Copyright URI Online Judge
+--- www.urionlinejudge.com.br
+--- Problem 2624
+
+CREATE TABLE customers (
+  id numeric PRIMARY KEY,
+  name varchar(255),
+  street varchar(255),
+  city varchar(255),
+  state char(2),
+  credit_limit numeric
+);
+
+
+INSERT INTO customers (id, name, street, city, state, credit_limit)
+VALUES
+  (1, 'Nicolas Diogo Cardoso', 'Acesso Um', 'Porto Alegre', 'RS', 475),
+  (2, 'Cecília Olivia Rodrigues', 'Rua Sizuka Usuy', 'Cianorte', 'PR', 3170),
+  (3, 'Augusto Fernando Carlos Eduardo Cardoso', 'Rua Baldomiro Koerich', 'Palhoça', 'SC', 1067),
+  (4, 'Nicolas Diogo Cardoso', 'Acesso Um', 'Porto Alegre', 'RS', 475),
+  (5, 'Sabrina Heloisa Gabriela Barros', 'Rua Engenheiro Tito Marques Fernandes', 'Porto Alegre', 'RS', 4312)
+  (6, 'Joaquim Diego Lorenzo Araújo', 'Rua Vitorino', 'Novo Hamburgo', 'RS', 2314);
+  
+  
+  /*  Execute this query to drop the tables */
+  -- DROP TABLE customers; -- 
+  ```
+
+  ```sql
+SELECT COUNT(DISTINCT(customers.city))
+FROM customers
+```
