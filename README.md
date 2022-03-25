@@ -2069,6 +2069,12 @@ prices table
 |    4   | Gold Seal     |    3.00   |
 |    5   | Promotion     |    1.50   |
 
+Output sample
+
+| **id** | **name**   |
+|--------|------------|
+|    3   | White Duck |
+
 ```sql
 --- URI Online Judge SQL
 --- Copyright URI Online Judge
@@ -2106,4 +2112,10 @@ VALUES
   
   /*  Execute this query to drop the tables */
   -- DROP TABLE movies, prices; --
+```
+```sql
+SELECT mv.id, mv.name
+FROM movies mv
+INNER JOIN prices pr ON(mv.id_prices = pr.id)
+WHERE pr.value < 2.00
 ```
