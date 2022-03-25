@@ -1935,16 +1935,16 @@ CREATE TABLE products (
 
 INSERT INTO categories (id, name)
 VALUES 
-  (1,	'old stock'),
-  (2,	'new stock'),
-  (3,	'modern'),
-  (4,	'commercial'),
-  (5,	'recyclable'),
-  (6,	'executive'),
-  (7,	'superior'),
-  (8,	'wood'),
-  (9,	'super luxury'),
-  (10,	'vintage');
+  (1, 'old stock'),
+  (2, 'new stock'),
+  (3, 'modern'),
+  (4, 'commercial'),
+  (5, 'recyclable'),
+  (6, 'executive'),
+  (7, 'superior'),
+  (8, 'wood'),
+  (9, 'super luxury'),
+  (10, 'vintage');
   
 INSERT INTO products (id , name, amount, price, id_categories)
 VALUES
@@ -1955,6 +1955,7 @@ VALUES
   (5, 'Chair', '3000', '210.64', 9),	
   (6, 'Home alarm', 750, 460, 4);
   
-  /*  Execute this query to drop the tables */
-  -- DROP TABLE products, categories; --
-  ```
+/*  Execute this query to drop the tables */
+-- DROP TABLE products, categories; --
+```
+
