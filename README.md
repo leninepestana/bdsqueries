@@ -2031,3 +2031,17 @@ VALUES
 /*  Execute this query to drop the tables */
 -- DROP TABLE movies, genres; --
 ```
+```sql
+SELECT movies.id, movies.name
+FROM movies
+INNER JOIN genres 
+ON movies.id_genres = genres.id
+WHERE genres.description = 'Action'
+```
+
+```sql
+SELECT mv.id, mv.name
+FROM movies mv
+INNER JOIN genres gn ON (mv.id_genres = gn.id)
+WHERE gn.description LIKE '%Action%'
+```
