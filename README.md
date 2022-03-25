@@ -1887,7 +1887,7 @@ products table
 |    2   | Table for painting | 1000       | 560       |         9         |
 |    3   | Notebook desk      | 10000      | 25.50     |         9         |
 |    4   | Computer desk      | 350        | 320.50    |         6         |
-|    5   | Chair              | 3000       | 210.64    |         9         |
+|    5   | Chair              | 3000       | 210.64    |         6         |
 |    6   | Home alarm         | 750        | 460       |         4         |
 
 categories table
@@ -1959,3 +1959,9 @@ VALUES
 -- DROP TABLE products, categories; --
 ```
 
+```sql
+SELECT prd.id, prd.name
+FROM products prd
+INNER JOIN categories cat ON(prd.id_categories = cat.id)
+WHERE cat.name LIKE '%super%'
+```
