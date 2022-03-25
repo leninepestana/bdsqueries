@@ -1864,7 +1864,7 @@ VALUES
   (3, 'Towel holder', 10000, 25.50, 5, 1),
   (4, 'Computer desk', 350, 320.50, 4, 6),
   (5, 'Chair',	3000, 210.64, 3, 6),
-  (6, 'Single bed',	750, 460, 1, 2);
+  (6, 'Single bed', 750, 460, 1, 2);
   ```
 ```sql
 SELECT prod.name, prov.name
