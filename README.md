@@ -1745,11 +1745,11 @@ VALUES
 (6, 'Joaquim Diego Lorenzo Araújo', 'Rua Vitorino', 'Novo Hamburgo', 'RS', 2314);
   
   
-  /*  Execute this query to drop the tables */
-  -- DROP TABLE customers; -- 
-  ```
+/*  Execute this query to drop the tables */
+-- DROP TABLE customers; -- 
+```
 
-  ```sql
+```sql
 SELECT COUNT(DISTINCT(customers.city))
 FROM customers
 ```
@@ -1872,3 +1872,89 @@ FROM products prod
 INNER JOIN providers prov ON (prod.id_providers = prov.id)
 WHERE prod.id_categories = 6
 ```
+
+#### URI2606 - Categories
+
+When the data were migrated to the database, there was a small misunderstanding on the DBA.
+
+Your boss needs you to select the ID and the name of the products, whose categorie name start with 'super'.
+
+products table
+
+| **id** | **name**           | **amount** | **price** | **id_categories** |
+|--------|--------------------|------------|-----------|-------------------|
+|    1   | Lampshade          | 100        | 800       |         4         |
+|    2   | Table for painting | 1000       | 560       |         9         |
+|    3   | Notebook desk      | 10000      | 25.50     |         9         |
+|    4   | Computer desk      | 350        | 320.50    |         6         |
+|    5   | Chair              | 3000       | 210.64    |         9         |
+|    6   | Home alarm         | 750        | 460       |         4         |
+
+categories table
+
+| **id** | **name**     |
+|--------|--------------|
+|    1   | old stock    |
+|    2   | new stock    |
+|    3   | modern       |
+|    4   | commercial   |
+|    5   | recyclable   |
+|    6   | executive    |
+|    7   | superior     |
+|    8   | wood         |
+|    9   | super luxury |
+|   10   | vintage      |
+
+Output sample
+
+| **id** | **name**           |
+|--------|--------------------|
+|    2   | Table for painting |
+|    3   | Notebook desk      |
+|    5   | Chair              |
+
+```sql
+--- URI Online Judge SQL
+--- Copyright URI Online Judge
+--- www.urionlinejudge.com.br
+--- Problem 2606
+
+CREATE TABLE categories (
+  id numeric PRIMARY KEY,
+  name varchar
+);
+
+CREATE TABLE products (
+  id numeric PRIMARY KEY,
+  name varchar(50),
+  amount numeric,
+  price numeric(7,2),
+  id_categories numeric REFERENCES categories (id)
+);
+
+
+INSERT INTO categories (id, name)
+VALUES 
+  (1,	'old stock'),
+  (2,	'new stock'),
+  (3,	'modern'),
+  (4,	'commercial'),
+  (5,	'recyclable'),
+  (6,	'executive'),
+  (7,	'superior'),
+  (8,	'wood'),
+  (9,	'super luxury'),
+  (10,	'vintage');
+  
+INSERT INTO products (id , name, amount, price, id_categories)
+VALUES
+  (1, 'Lampshade', 100, 800, 4),
+  (2, 'Table for painting', 1000, 560, 9),
+  (3, 'Notebook desk', 10000, 25.50, 9),
+  (4, 'Computer desk', 350, 320.50, 6),
+  (5, 'Chair', '3000', '210.64', 9),	
+  (6, 'Home alarm', 750, 460, 4);
+  
+  /*  Execute this query to drop the tables */
+  -- DROP TABLE products, categories; --
+  ```
