@@ -2381,35 +2381,22 @@ VALUES
 ```
 
 ```sql
-/*
-SELECT p.name, f.name, c.name
-FROM categories c INNER JOIN products p ON
-     p.id_categories = c.id INNER JOIN providers f ON
-     p.id_providers = f.id
-WHERE c.name = 'Imported' AND f.name = 'Sansul SA'
-*/
-
-select products.name,providers.name,categories.name
-from products
-inner join providers on products.id_providers=providers.id
-inner join categories on products.id_categories=categories.id
-where providers.name='Sansul SA' and categories.name='Imported';
-
-SELECT pd.name, pv.name, c.name
-FROM providers AS pv
-JOIN products AS pd ON pv.id = pd.id_providers
-JOIN categories AS c ON c.id = pd.id_categories
-where pv.name like 'Sansul SA' and c.name like 'Imported';
-
--- com erros
-/*
 SELECT prd.name, prv.name, cat.name
-FROM products prd
-INNER JOIN providers prv ON (prd.id_providers = prd.id)
+FROM products prd 
+INNER JOIN providers prv ON (prd.id_providers = prv.id)
+INNER JOIN categories cat ON (prd.id_categories = cat.id)
+WHERE prv.name LIKE '%Sansul SA%' AND cat.name LIKE '%Imported%'
+```
+OR
+
+```sql
+SELECT prd.name, prv.name, cat.name
+FROM products prd 
+INNER JOIN providers prv ON (prd.id_providers = prv.id)
 INNER JOIN categories cat ON (prd.id_categories = cat.id)
 WHERE prv.name = 'Sansul SA' AND cat.name = 'Imported'
-*/
 ```
+
 
 
 #### URI2619
