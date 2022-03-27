@@ -2898,6 +2898,8 @@ AND dim.name IN ('C875', 'C774')
 
 ### 05-14 URI 2609 Preparing the query
 
+![Class Diagram URI 2609](https://user-images.githubusercontent.com/22635013/160297439-c76dcc2e-577b-42c8-aaed-1e923278498d.png)
+
 products table
 
 | **id** | **name**           | **amount** | **price** | **id_categories** |
@@ -2928,7 +2930,7 @@ Output sample
 | vintage  | 1000    |
 | wood     | 850     |
 
-![Class Diagram URI 2609](https://user-images.githubusercontent.com/22635013/160297439-c76dcc2e-577b-42c8-aaed-1e923278498d.png)
+
 
 ```sql
 --- URI Online Judge SQL
