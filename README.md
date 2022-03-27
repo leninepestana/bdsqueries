@@ -2896,3 +2896,4 @@ WHERE lir.name LIKE '%Richard%'
 AND dim.name IN ('C875', 'C774')
 ```
 
+### 05-14 URI 2609 Preparing the query
