@@ -2569,7 +2569,7 @@ CREATE TABLE orders (
 
 INSERT INTO customers (id, name, street, city, state, credit_limit)
 VALUES
-  (1, 'Nicolas Diogo Cardoso', 'Acesso Um',	'Porto Alegre',	'RS', 475),
+  (1, 'Nicolas Diogo Cardoso', 'Acesso Um', 'Porto Alegre',	'RS', 475),
   (2, 'Cecília Olivia Rodrigues', 'Rua Sizuka Usuy', 'Cianorte', 'PR', 3170),
   (3, 'Augusto Fernando Carlos Eduardo Cardoso', 'Rua Baldomiro Koerich', 'Palhoça', 'SC', 1067),
   (4, 'Pedro Cardoso', 'Acesso Um', 'Porto Alegre', 'RS', 475),
