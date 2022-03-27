@@ -2499,9 +2499,18 @@ VALUES
 -- DROP TABLE products, categories, providers; --
 
 ```
+```sql
+SELECT prd.name, prv.name, prd.price
+FROM products prd
+INNER JOIN providers prv ON(prd.id_providers = prv.id)
+INNER JOIN categories cat ON(prd.id_categories = cat.id)
+WHERE prd.price > 1000
+AND cat.name LIKE '%Super Luxury%'
+```
 
 
-#### URI2620
+#### URI2620 - Orders in First Half
+
 
 #### URI2621
 
