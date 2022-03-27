@@ -2611,7 +2611,7 @@ providers table
 |    1   | Ajax SA            | Rua Presidente Castelo Branco | Porto Alegre   |     RS    |
 |    2   | Sansul SA          | Av Brasil                     | Rio de Janeiro |     RJ    |
 |    3   | Pr Sheppard Chairs | Rua do Moinho                 | Santa Maria    |     RS    |
-|    4   | Elon Electro       | Rua Apolo                     | SÃ£o Paulo     |     SP    |
+|    4   | Elon Electro       | Rua Apolo                     | São Paulo      |     SP    |
 |    5   | Mike Electro       | Rua Pedro da Cunha            | Curitiba       |     PR    |
 
 products table
@@ -2692,8 +2692,154 @@ WHERE prv.name LIKE 'P%' AND prd.amount BETWEEN 10 AND 20
 
 
 
-#### URI2622
+#### URI2622 - Legal Person
 
-#### URI2623
+The sales industry wants to make a promotion for all clients that are legal entities. For this you must display the name of the customers that are legal entity.
+
+customers table
+
+| **id** | **name**                                | **street**                            | **city**      | **state** | **credit_limit** |
+|--------|-----------------------------------------|---------------------------------------|---------------|-----------|------------------|
+|    1   | Nicolas Diogo Cardoso                   | Acesso Um                             | Porto Alegre  | RS        | 475              |
+|    2   | CecÃ­lia Olivia Rodrigues               | Rua Sizuka Usuy                       | Cianorte      | PR        | 3170             |
+|    3   | Augusto Fernando Carlos Eduardo Cardoso | Rua Baldomiro Koerich                 | PalhoÃ§a      | SC        | 1067             |
+|    4   | Nicolas Diogo Cardoso                   | Acesso Um                             | Porto Alegre  | RS        | 475              |
+|    5   | Sabrina Heloisa Gabriela Barros         | Rua Engenheiro Tito Marques Fernandes | Porto Alegre  | RS        | 4312             |
+|    6   | Joaquim Diego Lorenzo AraÃºjo           | Rua Vitorino                          | Novo Hamburgo | RS        | 2314             |
+
+legal_person table
+
+| **id_customers** | **cnpj**   | **contact** |
+|------------------|------------|-------------|
+|         4        | 8.5884E+13 | 99767-0562  |
+|         5        | 4.7774E+13 | 99100-8965  |
+
+
+
+```sql
+--- URI Online Judge SQL
+--- Copyright URI Online Judge
+--- www.urionlinejudge.com.br
+--- Problem 2622
+
+CREATE TABLE customers (
+  id numeric PRIMARY KEY,
+  name varchar(255),
+  street varchar(255),
+  city varchar(255),
+  state char(2),
+  credit_limit numeric
+);
+
+CREATE TABLE legal_person (
+  id_customers numeric REFERENCES customers (id),
+  cnpj char (18),
+  contact varchar(255)
+);
+
+INSERT INTO customers (id, name, street, city, state, credit_limit)
+VALUES
+  (1, 'Nicolas Diogo Cardoso', 'Acesso Um',	'Porto Alegre',	'RS', 475),
+  (2, 'Cecília Olivia Rodrigues', 'Rua Sizuka Usuy', 'Cianorte', 'PR', 3170),
+  (3, 'Augusto Fernando Carlos Eduardo Cardoso', 'Rua Baldomiro Koerich', 'Palhoça', 'SC', 1067),
+  (4, 'Nicolas Diogo Cardoso', 'Acesso Um', 'Porto Alegre', 'RS', 475),
+  (5, 'Sabrina Heloisa Gabriela Barros', 'Rua Engenheiro Tito Marques Fernandes', 'Porto Alegre', 'RS',	4312),
+  (6, 'Joaquim Diego Lorenzo Araújo', 'Rua Vitorino', 'Novo Hamburgo', 'RS', 2314);
+  
+INSERT INTO legal_person (id_customers, cnpj, contact)
+VALUES
+  (4, '85883842000191',	'99767-0562'),
+  (5, '47773848000117',	'99100-8965');
+  
+
+/*  Execute this query to drop the tables */
+-- DROP TABLE legal_person, customers; -- 
+```
+```sql
+SELECT cust.name
+FROM customers cust
+INNER JOIN legal_person leg ON(cust.id = leg.id_customers)
+```
+
+
+#### URI2623 - Categories with Various Products
+
+The sales industry needs a report to know what products are left in stock.
+
+To help the sales industry, display the product name and category name for products whose amount is greater than 100 and the category ID is 1,2,3,6 or 9. Show the results in ascendent order by category ID.
+
+
+products table
+
+| **id** | **name**        | **amount** | **price** | **id_categories** |
+|--------|-----------------|------------|-----------|-------------------|
+|    1   | Blue Chair      | 30         | 300       |         9         |
+|    2   | Red Chair       | 200        | 2150      |         2         |
+|    3   | Disney Wardrobe | 400        | 829.5     |         4         |
+|    4   | Blue Toaster    | 20         | 9.9       |         3         |
+|    5   | Solar Panel     | 30         | 3000.25   |         4         |
+
+categories table
+
+| **id** | **name**     |
+|--------|--------------|
+|    1   | Superior     |
+|    2   | Super Luxury |
+|    3   | Modern       |
+|    4   | Nerd         |
+|    5   | Infantile    |
+|    6   | Robust       |
+|    9   | Wood         |
+
+Output sample
+
+| **name**  | **name**     |
+|-----------|--------------|
+| Red Chair | Super Luxury |
+
+```sql
+--- URI Online Judge SQL
+--- Copyright URI Online Judge
+--- www.urionlinejudge.com.br
+--- Problem 2623
+
+CREATE TABLE categories (
+  id numeric PRIMARY KEY,
+  name varchar(255)
+);
+
+CREATE TABLE products (
+  id numeric PRIMARY KEY,
+  name varchar (255),
+  amount numeric,
+  price numeric,
+  id_categories numeric REFERENCES categories (id)
+);
+
+
+INSERT INTO categories (id, name)
+VALUES
+  (1, 'Superior'),
+  (2, 'Super Luxury'),
+  (3, 'Modern'),
+  (4, 'Nerd'),
+  (5, 'Infantile'),
+  (6, 'Robust'),
+  (9, 'Wood');
+
+INSERT INTO products (id, name, amount, price, id_categories)
+VALUES
+  (1, 'Blue Chair',	30, 300.00,	9),
+  (2, 'Red Chair', 200,	2150.00, 2),
+  (3, 'Disney Wardrobe', 400, 829.50, 4),
+  (4, 'Blue Toaster', 20, 9.90,	3),
+  (5, 'Solar Panel', 30, 3000.25, 4);
+
+
+/*  Execute this query to drop the tables */
+-- DROP TABLE products, categories; --
+```
+
+
 
 #### URI2742
