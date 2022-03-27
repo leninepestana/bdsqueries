@@ -2674,6 +2674,23 @@ VALUES
 -- DROP TABLE products, providers; --  
 ```
 
+```sql
+SELECT products.name
+FROM products
+INNER JOIN providers ON providers.id = products.id_providers
+WHERE products.amount BETWEEN 10 AND 20
+AND providers.name LIKE 'P%';
+```
+OR
+
+```sql
+SELECT prd.name
+FROM products prd
+INNER JOIN providers prv ON(prd.id_providers = prv.id)
+WHERE prv.name LIKE 'P%' AND prd.amount BETWEEN 10 AND 20
+```
+
+
 
 #### URI2622
 
