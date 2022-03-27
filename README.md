@@ -2887,3 +2887,12 @@ Output sample
 |---------------------|------------------|
 | Richard Gran Master | 4.045            |
 
+
+```sql
+SELECT lir.name, ROUND(lir.omega*1.618,3) AS "The N Factor"
+FROM life_registry lir 
+INNER JOIN dimensions dim ON (lir.dimensions_id = dim.id)
+WHERE lir.name LIKE '%Richard%' 
+AND dim.name IN ('C875', 'C774')
+```
+
