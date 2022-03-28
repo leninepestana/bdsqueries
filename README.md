@@ -2979,7 +2979,7 @@ INNER JOIN products ON (products.id_categories = categories.id)
 GROUP BY categories.name
 ```
 
-Product class implementation
+***Product*** class implementation
 
 ```sql
 package com.devsuperior.uri2609.entities;
@@ -3050,3 +3050,236 @@ public class Product {
 	}
 }
 ```
+***Category*** class implementation
+
+```sql
+package com.devsuperior.uri2609.entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "categories")
+public class Category {
+
+	@Id
+	private Long id;
+	private String name;
+	
+	@OneToMany(mappedBy = "category")
+	private List<Product> products = new ArrayList<>();
+	
+	public Category() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+}
+```
+***CategorySumProjection*** class implementation
+
+```sql
+package com.devsuperior.uri2609.projections;
+
+public interface CategorySumProjection {
+
+	String getName();
+	Long getSum();
+}
+```
+***CategoryRepository*** class implementation
+
+```sql
+package com.devsuperior.uri2609.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.devsuperior.uri2609.dto.CategorySumDTO;
+import com.devsuperior.uri2609.entities.Category;
+import com.devsuperior.uri2609.projections.CategorySumProjection;
+
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+	@Query(nativeQuery = true, value = "SELECT categories.name, SUM(products.amount) "
+			+ "FROM categories "
+			+ "INNER JOIN products ON (products.id_categories = categories.id) "
+			+ "GROUP BY categories.name")
+	List<CategorySumProjection> search1();
+	
+	@Query(value = "SELECT new com.devsuperior.uri2609.dto.CategorySumDTO(obj.category.name, SUM(obj.amount)) "
+			+ "FROM Product obj "
+			+ "GROUP BY obj.category.name")
+	List<CategorySumDTO> search2();
+	
+}
+```
+***CategorySumDTO*** class implementation
+
+```sql
+package com.devsuperior.uri2609.dto;
+
+import com.devsuperior.uri2609.projections.CategorySumProjection;
+
+public class CategorySumDTO {
+
+	private String name;
+	private Long sum;
+	
+	public CategorySumDTO() {
+	}
+
+	public CategorySumDTO(String name, Long sum) {
+		this.name = name;
+		this.sum = sum;
+	}
+
+	public CategorySumDTO(CategorySumProjection projection) {
+		name = projection.getName();
+		sum = projection.getSum();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getSum() {
+		return sum;
+	}
+
+	public void setSum(Long sum) {
+		this.sum = sum;
+	}
+
+	@Override
+	public String toString() {
+		return "CategorySumDTO [name=" + name + ", sum=" + sum + "]";
+	}
+}
+```
+***Application*** class implementation
+
+```sql
+package com.devsuperior.uri2609;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.devsuperior.uri2609.dto.CategorySumDTO;
+import com.devsuperior.uri2609.projections.CategorySumProjection;
+import com.devsuperior.uri2609.repositories.CategoryRepository;
+
+@SpringBootApplication
+public class Uri2609Application implements CommandLineRunner {
+
+	@Autowired
+	private CategoryRepository repository;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(Uri2609Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		
+		List<CategorySumProjection> list = repository.search1();
+		List<CategorySumDTO> result1 = list.stream()
+        .map(x -> new CategorySumDTO(x)).collect(Collectors.toList());
+		
+		System.out.println("\n*** RESULT SQL PROJECTION");
+		for (CategorySumDTO obj : result1) {
+			System.out.println(obj);
+		}		
+		System.out.println("\n\n");
+	
+	
+		
+		List<CategorySumDTO> result2 = repository.search2();
+		
+		System.out.println("\n*** RESULT JPQL");
+		for (CategorySumDTO obj : result2) {
+			System.out.println(obj);
+		}
+	
+		
+	}
+}
+```
+Result:
+
+```code
+Hibernate: 
+    SELECT
+        categories.name,
+        SUM(products.amount) 
+    FROM
+        categories 
+    INNER JOIN
+        products 
+            ON (
+                products.id_categories = categories.id
+            ) 
+    GROUP BY
+        categories.name
+
+*** RESULT SQL PROJECTION
+CategorySumDTO [name=vintage, sum=1000]
+CategorySumDTO [name=wood, sum=850]
+CategorySumDTO [name=luxury, sum=350]
+CategorySumDTO [name=modern, sum=13000]
+
+
+
+Hibernate: 
+    select
+        category1_.name as col_0_0_,
+        sum(product0_.amount) as col_1_0_ 
+    from
+        products product0_ cross 
+    join
+        categories category1_ 
+    where
+        product0_.id_categories=category1_.id 
+    group by
+        category1_.name
+
+*** RESULT JPQL
+CategorySumDTO [name=vintage, sum=1000]
+CategorySumDTO [name=wood, sum=850]
+CategorySumDTO [name=luxury, sum=350]
+CategorySumDTO [name=modern, sum=13000]
+```
+
