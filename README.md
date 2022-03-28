@@ -2970,24 +2970,83 @@ VALUES
   
   /*  Execute this query to drop the tables */
   -- DROP TABLE categories,products; --
+
   ```
-
-
-
 ```sql
-SELECT categories.name, SUM(amount) as sum
-FROM products, categories
-WHERE products.id_categories = categories.id
-GROUP BY categories.name
-ORDER BY categories.name ASC
-```
-
-OR
-
-```sql
-SELECT categories.name, SUM(amount) as sum
-FROM products, categories
-WHERE products.id_categories = categories.id
+SELECT categories.name, SUM(products.amount)
+FROM categories
+INNER JOIN products ON (products.id_categories = categories.id)
 GROUP BY categories.name
 ```
 
+Product class implementation
+
+```sql
+package com.devsuperior.uri2609.entities;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "products")
+public class Product {
+
+	@Id
+	private Long id;
+	private String name;
+	private Integer amount;
+	private BigDecimal price;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_categories")
+	private Category category;
+	
+	public Product() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+}
+```
