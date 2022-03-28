@@ -3293,6 +3293,8 @@ The manager wants you to show him the name of the lawyer with the most clients, 
 
 OBS: Before presenting the average, show a field called Average to make the report more readable. The average must be presented as an integer.
 
+![Class Diagram URI 2737](https://user-images.githubusercontent.com/22635013/160358853-71932f26-362d-4830-ae9b-b81af1f10971.png)
+
 customer lawyer table
 
 | **register** | **name**            | **customers_number** |
@@ -3379,3 +3381,4 @@ UNION ALL
 (SELECT 'Average', ROUND(AVG(customers_number), 0)
 FROM lawyers)
 ```
+Class Diagram URI 2737
