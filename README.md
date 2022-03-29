@@ -3623,3 +3623,26 @@ Show the CPF, employees (empregados) name and department (departamentos) name of
 | 1733332162   | Tulio Vidal       | 8350        | (null)             | 1020        |
 | 4244435272   | Juliana Rodrigues | 3310        | (null)             | 1020        |
 | 1014332672   | Natalia Marques   | 2900        | (null)             | 1010        |
+
+***Departamentos*** table
+
+| **dnumero** | **dnome** | **cpf_gerente** |
+|-------------|-----------|-----------------|
+| 1010        | Pesquisa  | 049382234322    |
+| 1020        | Ensino    | 2434332222      |
+
+
+***Trabalha*** table
+
+| **cpf_emp**  | **pnumero** |
+|--------------|-------------|
+| 49382234322  | 2010        |
+| 586733922290 | 2020        |
+| 49382234322  | 2020        |
+
+***Projetos*** table
+
+| **pnumero** | **pnome** | **dnumero** |
+|-------------|-----------|-------------|
+| 2010        | Alpha     | 1010        |
+| 2020        | Beta      | 1020        |
