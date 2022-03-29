@@ -3381,4 +3381,243 @@ UNION ALL
 (SELECT 'Average', ROUND(AVG(customers_number), 0)
 FROM lawyers)
 ```
-Class Diagram URI 2737
+
+***Lawyer*** class implementation
+
+```java
+package com.devsuperior.uri2737.entities;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "lawyers")
+public class Lawyer {
+
+	@Id
+	private Long register;
+	private String name;
+	private Integer customersNumber;
+	
+	public Lawyer() {
+	}
+
+	public Long getRegister() {
+		return register;
+	}
+
+	public void setRegister(Long register) {
+		this.register = register;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getCustomersNumber() {
+		return customersNumber;
+	}
+
+	public void setCustomersNumber(Integer customersNumber) {
+		this.customersNumber = customersNumber;
+	}
+}
+```
+***LawyerMinProjection*** class implementation
+
+```java
+package com.devsuperior.uri2737.projections;
+
+public interface LawyerMinProjection {
+
+	String getName();
+	Integer getCustomersNumber();
+}
+```
+***LawyerRepository*** class implementation
+
+```java
+package com.devsuperior.uri2737.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.devsuperior.uri2737.entities.Lawyer;
+import com.devsuperior.uri2737.projections.LawyerMinProjection;
+
+public interface LawyerRepository extends JpaRepository<Lawyer, Long> {
+	
+	@Query(nativeQuery = true, value = "(SELECT name, customers_number AS customersNumber "
+			+ "FROM lawyers "
+			+ "WHERE customers_number = ("
+			+ "	SELECT MAX(customers_number) "
+			+ "	FROM lawyers) "
+			+ ") "
+			+ "UNION ALL "
+			+ "(SELECT name, customers_number "
+			+ "FROM lawyers "
+			+ "WHERE customers_number = ( "
+			+ "	SELECT MIN(customers_number) "
+			+ "	FROM lawyers) "
+			+ ") "
+			+ "UNION ALL "
+			+ "(SELECT 'Average', ROUND(AVG(customers_number), 0) "
+			+ "FROM lawyers)")
+	List<LawyerMinProjection> search1();
+}
+```
+***Application*** class implementation
+```java
+package com.devsuperior.uri2737;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.devsuperior.uri2737.dto.LawyerMinDTO;
+import com.devsuperior.uri2737.projections.LawyerMinProjection;
+import com.devsuperior.uri2737.repositories.LawyerRepository;
+
+@SpringBootApplication
+public class Uri2737Application implements CommandLineRunner {
+
+	@Autowired
+	private LawyerRepository repository;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(Uri2737Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		
+		List<LawyerMinProjection> list = repository.search1();
+		List<LawyerMinDTO> result1 = list.stream()
+				.map(x -> new LawyerMinDTO(x)).collect(Collectors.toList());
+		
+		System.out.println("\n*** RESULT SQL PROJECTION");
+		for (LawyerMinDTO obj : result1) {
+			System.out.println(obj);
+		}
+		
+		System.out.println("\n\n");
+	}
+}
+```
+Result:
+
+```code
+Hibernate: 
+    (
+        SELECT
+            name,
+            customers_number AS customersNumber 
+        FROM
+            lawyers 
+        WHERE
+            customers_number = (
+                SELECT
+                    MAX(customers_number)  
+                FROM
+                    lawyers
+            ) 
+        ) 
+    UNION
+    ALL (
+        SELECT
+            name,
+            customers_number 
+        FROM
+            lawyers 
+        WHERE
+            customers_number = (
+                SELECT
+                    MIN(customers_number)  
+                FROM
+                    lawyers
+            ) 
+        ) 
+    UNION
+    ALL (
+        SELECT
+            'Average',
+            ROUND(AVG(customers_number),
+            0) 
+        FROM
+            lawyers
+    )
+
+*** RESULT SQL PROJECTION
+LawyerMinDTO [name=Chelsey D. Sanders, customersNumber=20]
+LawyerMinDTO [name=Marty M. Harrison, customersNumber=5]
+LawyerMinDTO [name=Average, customersNumber=12]
+```
+> The ***UNION*** operator is used to combine the result-set of two or more ***SELECT*** statements.
+***JPQL*** does not yet support ***UNION*** operator
+It is only possible to do native sql query in ***JPQL*** for ***UNION*** operator
+
+### 05-19 URI 2990 Preparing the query
+
+#### Employees CPF
+
+Show the CPF, employees (empregados) name and department (departamentos) name of the employees that don't work (trabalha) in any project (projetos). The result must be order by CPF.
+
+Class Diagram URI 2990
+
+***Schema***
+
+**Empregados**
+
+| **Column**     | **Type**     |
+|----------------|--------------|
+| cpf (PK)       | varchar (15) |
+| enome          | varchar (60) |
+| salario        | float        |
+| cpf_supervisor | varchar (15) |
+| dnumero        | integer)     |
+
+**Empregados**
+
+| **Column**       | **Type**     |
+|------------------|--------------|
+| dnumero (PK)     | integer      |
+| dnome            | varchar (60) |
+| cpf_gerente (FK) | varchar (15) |
+
+**Trabalha**
+
+| **Column**   | **Type**     |
+|--------------|--------------|
+| cpf_emp (FK) | varchar (15) |
+| pnumero      | integer      |
+
+**Projetos**
+
+| **Column**   | **Type**     |
+|--------------|--------------|
+| pnumero (PK) | integer      |
+| pnome        | varchar (45) |
+| dnumero (FK) | integer      |
+
+
+***Empregados*** table
+
+| **cpf**      | **enome**         | **salario** | **cpf_supervisor** | **dnumero** |
+|--------------|-------------------|-------------|--------------------|-------------|
+| 049382234322 | João Silva        | 2350        | 2434332222         | 1010        |
+| 586733922290 | Mario Silveira    | 3500        | 2434332222         | 1010        |
+| 2434332222   | Aline Barros      | 2350        | (null)             | 1010        |
+| 1733332162   | Tulio Vidal       | 8350        | (null)             | 1020        |
+| 4244435272   | Juliana Rodrigues | 3310        | (null)             | 1020        |
+| 1014332672   | Natalia Marques   | 2900        | (null)             | 1010        |
