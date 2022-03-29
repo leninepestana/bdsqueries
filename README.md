@@ -3573,7 +3573,9 @@ It is only possible to do native sql query in ***JPQL*** for ***UNION*** operato
 
 Show the CPF, employees (empregados) name and department (departamentos) name of the employees that don't work (trabalha) in any project (projetos). The result must be order by CPF.
 
-Class Diagram URI 2990
+**Class Diagram URI 2990**
+
+![Class Diagram URI 2990](https://user-images.githubusercontent.com/22635013/160576686-94d7be38-d80b-4107-b152-96772694d07c.png)
 
 ***Schema***
 
@@ -3585,7 +3587,7 @@ Class Diagram URI 2990
 | enome          | varchar (60) |
 | salario        | float        |
 | cpf_supervisor | varchar (15) |
-| dnumero        | integer)     |
+| dnumero        | integer      |
 
 **Empregados**
 
