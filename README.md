@@ -3575,7 +3575,7 @@ Show the CPF, employees (empregados) name and department (departamentos) name of
 
 **Class Diagram URI 2990**
 
-![Class Diagram URI 2990](https://user-images.githubusercontent.com/22635013/160576686-94d7be38-d80b-4107-b152-96772694d07c.png)
+![Class Diagram URI 2990](https://user-images.githubusercontent.com/22635013/160588935-f57c92b3-35fb-44a0-921f-11884d75175f.png)
 
 ***Schema***
 
