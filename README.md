@@ -3765,6 +3765,23 @@ For this case, I intend to collect null values, which are employees who are not 
 
 The query below gives me all records with all emplyees (empregados), including repeated values, since I am doing a JOIN with a one-to-many relationship, in relation to the employees (empregados) with the work (trabalha), taking into account that the same employee (empregado) can work (trabalha) on more than one project (projeto)
 
+```sql
+SELECT empregados.cpf, empregados.enome, departamentos.dnome
+FROM empregados
+INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
+LEFT JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
+ORDER BY cpf
+```
+| **cpf**      | **enome**         | **dnome** |
+|--------------|-------------------|-----------|
+| 49382234322  | João Silva        | Pesquisa  |
+| 49382234322  | João Silva        | Pesquisa  |
+| 1014332672   | Natalia Marques   | Pesquisa  |
+| 1733332162   | Tulio Vidal       | Ensino    |
+| 2434332222   | Aline Barros      | Pesquisa  |
+| 4244435272   | Juliana Rodrigues | Ensino    |
+| 586733922290 | Mario Silveira    | Pesquisa  |
+
 When I project a JOIN to many, it also brings up the repeated employees
 
 The query below gives me all records including null values
@@ -3788,20 +3805,5 @@ ORDER BY cpf
 | 4244435272   | Juliana Rodrigues | Ensino    | NULL         | NULL        |
 | 586733922290 | Mario Silveira    | Pesquisa  | 586733922290 | 2020        |
 
-```sql
-SELECT empregados.cpf, empregados.enome, departamentos.dnome
-FROM empregados
-INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
-LEFT JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
-ORDER BY cpf
-```
-| **cpf**      | **enome**         | **dnome** |
-|--------------|-------------------|-----------|
-| 49382234322  | João Silva        | Pesquisa  |
-| 49382234322  | João Silva        | Pesquisa  |
-| 1014332672   | Natalia Marques   | Pesquisa  |
-| 1733332162   | Tulio Vidal       | Ensino    |
-| 2434332222   | Aline Barros      | Pesquisa  |
-| 4244435272   | Juliana Rodrigues | Ensino    |
-| 586733922290 | Mario Silveira    | Pesquisa  |
+
 
