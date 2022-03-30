@@ -3733,6 +3733,16 @@ WHERE empregados.cpf NOT IN (
 )
 ORDER BY empregados.cpf
 ```
+
+Output result
+
+| **cpf**    | **enome**         | **dnome** |
+|------------|-------------------|-----------|
+| 1014332672 | Natalia Marques   | Pesquisa  |
+| 1733332162 | Tulio Vidal       | Ensino    |
+| 2434332222 | Aline Barros      | Pesquisa  |
+| 4244435272 | Juliana Rodrigues | Ensino    |
+
 ### 05-20 URI 2990 Workaround
 
 Another way to solve it is to use the INNER JOIN
