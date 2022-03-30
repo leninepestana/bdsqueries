@@ -3131,7 +3131,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 			+ "GROUP BY categories.name")
 	List<CategorySumProjection> search1();
 	
-	@Query(value = "SELECT new com.devsuperior.uri2609.dto.CategorySumDTO(obj.category.name, SUM(obj.amount)) "
+	@Query(value = "SELECT new com.devsuperior.uri2609.dto
+					.CategorySumDTO(obj.category.name, SUM(obj.amount)) "
 			+ "FROM Product obj "
 			+ "GROUP BY obj.category.name")
 	List<CategorySumDTO> search2();
