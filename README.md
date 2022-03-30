@@ -3763,7 +3763,7 @@ INNER JOIN collects intercession values plus null values
 
 For this case, I intend to collect null values, which are employees who are not in any project
 
-The query below gives me all records with all emplyees (empregados), including repeated values, since I am doing a JOIN with a one-to-many relationship, in relation to the employees (empregados) with the work (trabalha), taking into account that the same employee (empregado) can work (trabalha) on more than one project (projeto)
+The query below gives me all records with all employees (empregados), including repeated values, since I am doing a JOIN with a one-to-many relationship, in relation to the employees (empregados) with the work (trabalha), taking into account that the same employee (empregado) can work (trabalha) on more than one project (projeto)
 
 ```sql
 SELECT empregados.cpf, empregados.enome, departamentos.dnome
