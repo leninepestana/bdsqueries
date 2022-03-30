@@ -3733,3 +3733,13 @@ WHERE empregados.cpf NOT IN (
 )
 ORDER BY empregados.cpf
 ```
+### 05-20 URI 2990 Workaround
+
+Another way to solve it is to use the INNER JOIN
+
+INNER JOIN collects intercession values plus null values
+
+Another way to solve it is to use the INNER JOIN
+INNER JOIN collects intercession values plus null values
+
+For this case, I intend to collect null values, which are employees who are not in any project
