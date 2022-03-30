@@ -3709,6 +3709,19 @@ VALUES
   (2010, 'Alpha', 1010),
   (2020, 'Beta', 1020);
   ```
+In a first phase, to understand the functioning of the question, and of the interception that we do not want, I will first analyze
+
+With this query below, we collect employees who work on a project
+
+```sql
+SELECT empregados.cpf, empregados.enome, departamentos.dnome
+FROM empregados
+INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
+INNER JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
+INNER JOIN projetos ON (projetos.pnumero = trabalha.pnumero)
+```
+To get the intended result, I have to restrict those employees who don't work
+
 ```sql
 SELECT empregados.cpf, empregados.enome, departamentos.dnome
 FROM empregados
