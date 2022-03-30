@@ -3786,6 +3786,8 @@ When I project a JOIN to many, it also brings up the repeated employees
 
 The query below gives me all records including null values
 
+LEFT JOIN gives me all records including records outside the relationship between employee(s) working (works) on projects, unlike INNER JOIN which brings records only within the relationship
+
 ```sql
 SELECT empregados.cpf, empregados.enome, departamentos.dnome, trabalha.*
 FROM empregados
