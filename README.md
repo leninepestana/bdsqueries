@@ -3795,7 +3795,7 @@ INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
 LEFT JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
 ORDER BY cpf
 ```
-
+Result table
 
 | **cpf**      | **enome**         | **dnome** | **cpf_emp**  | **pnumero** |
 |--------------|-------------------|-----------|--------------|-------------|
@@ -3806,6 +3806,51 @@ ORDER BY cpf
 | 2434332222   | Aline Barros      | Pesquisa  | NULL         | NULL        |
 | 4244435272   | Juliana Rodrigues | Ensino    | NULL         | NULL        |
 | 586733922290 | Mario Silveira    | Pesquisa  | 586733922290 | 2020        |
+
+I can restrict the query in order to get only null records from work (trabalha)
+
+```sql
+SELECT empregados.cpf, empregados.enome, departamentos.dnome, trabalha.*
+FROM empregados
+INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
+LEFT JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
+WHERE trabalha.cpf_emp IS null
+ORDER BY cpf
+```
+
+
+Result table
+
+| **cpf**    | **enome**         | **dnome** | **cpf_emp** | **pnumero** |
+|------------|-------------------|-----------|-------------|-------------|
+| 1014332672 | Natalia Marques   | Pesquisa  | NULL        | NULL        |
+| 1733332162 | Tulio Vidal       | Ensino    | NULL        | NULL        |
+| 2434332222 | Aline Barros      | Pesquisa  | NULL        | NULL        |
+| 4244435272 | Juliana Rodrigues | Ensino    | NULL        | NULL        |
+
+
+To get the perfect result, I'll remove the trabala.* from the query
+
+```sql
+SELECT empregados.cpf, empregados.enome, departamentos.dnome
+FROM empregados
+INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
+LEFT JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
+WHERE trabalha.cpf_emp IS null
+ORDER BY cpf
+```
+
+Result table
+
+
+| **cpf**    | **enome**         | **dnome** |
+|------------|-------------------|-----------|
+| 1014332672 | Natalia Marques   | Pesquisa  |
+| 1733332162 | Tulio Vidal       | Ensino    |
+| 2434332222 | Aline Barros      | Pesquisa  |
+| 4244435272 | Juliana Rodrigues | Ensino    |
+
+
 
 
 
