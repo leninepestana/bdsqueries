@@ -3720,6 +3720,15 @@ INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
 INNER JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
 INNER JOIN projetos ON (projetos.pnumero = trabalha.pnumero)
 ```
+Output result
+
+| cpf          | enome          | dnome    |
+|--------------|----------------|----------|
+| 49382234322  | João Silva     | Pesquisa |
+| 586733922290 | Mario Silveira | Pesquisa |
+| 49382234322  | João Silva     | Pesquisa |
+
+
 To get the intended result, I have to restrict those employees who don't work
 
 ```sql
