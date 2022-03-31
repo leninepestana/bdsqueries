@@ -4172,6 +4172,8 @@ public interface EmpregadoRepository extends JpaRepository<Empregado, Long> {
 	List<EmpregadoDeptProjection> search1();
 }
 ```
+#### JPQL implementation
+
 To implement JPQL query I will start from native SQL code
 
 ```java
