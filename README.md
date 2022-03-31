@@ -4239,7 +4239,7 @@ List<EmpregadoDeptDTO> search2();
 	+ "ORDER BY empregados.cpf")
 List<EmpregadoDeptDTO> search2();
 ```
-5th - Replace the employed ***empregados*** with obj and In the ***FROM empregados*** reference, put the ***Empregado*** class and an alias obj
+5th - Replace the employed ***empregados*** with ***obj*** and In the ***FROM empregados*** reference, put the ***Empregado*** class and an alias ***obj***
 
  ```java
 @Query(value = "SELECT new com.devsuperior.uri2990.dto.EmpregadoDeptDTO(obj.cpf, obj.enome, obj.departamento.dnome) "
@@ -4247,8 +4247,36 @@ List<EmpregadoDeptDTO> search2();
 	+ "WHERE obj.cpf NOT IN ("
 	+ "	SELECT obj.cpf "
 	+ "	FROM Empregado obj "
-	+ "	INNER JOIN trabalha ON (trabalha.cpf_emp = obj.cpf) "
+	+ "	INNER JOIN trabalha ON (trabalha.cpf_emp = empregados.cpf) "
 	+ ") "
 	+ "ORDER BY obj.cpf")
 List<EmpregadoDeptDTO> search2();
 ```
+
+6th - Since I want to exclude employees who work from the query and keep those who do not work on any project
+
+I can browse the query from the ***obj***, access ***Empregado****** and in the ***@ManyToMany*** query 
+
+I access the ***projetosOndeTrabalha*** object. 
+
+With this query I am accessing the query of ***empregados*** who have a relationship with ***Trabalha***
+
+In this case I will consult all ***empregados*** except those that are contained in those who work
+
+The query should look like the above
+
+ ```java
+@Query(value = "SELECT new com.devsuperior.uri2990.dto.EmpregadoDeptDTO(obj.cpf, obj.enome, obj.departamento.dnome) "
+	+ "FROM Empregado obj "
+	+ "WHERE obj.cpf NOT IN ("
+	+ "	SELECT obj.cpf "
+	+ "	FROM Empregado obj "
+	+ "	INNER JOIN obj.projetosOndeTrabalha) "
+	+ ") "
+	+ "ORDER BY obj.cpf")
+List<EmpregadoDeptDTO> search2();
+```
+
+> Important note: In the second query, it is not necessary to use an alias different from the obj, 
+> because each query has its scope, and the first obj ends its scope in the first query. 
+> But I could have used Empregado emp for example, it would also work
