@@ -4142,6 +4142,19 @@ public interface EmpregadoDeptProjection {
 	String getDnome();
 }
 ```
+### This is the First SQL Query implementation
+
+```sql
+SELECT empregados.cpf, empregados.enome, departamentos.dnome
+FROM empregados
+INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
+WHERE empregados.cpf NOT IN (
+	SELECT empregados.cpf
+	FROM empregados
+	INNER JOIN trabalha ON (trabalha.cpf_emp = empregados.cpf)
+)
+ORDER BY empregados.cpf
+```
 #### SQL NATIVE QUERY implementation
 
 ***EmpregadoRepository*** interface implementation
@@ -4442,6 +4455,228 @@ Hibernate:
             ) 
     order by
         empregado0_.cpf
+EmpregadoDeptDTO [cpf=1014332672, enome=Natalia Marques, dnome=Pesquisa]
+EmpregadoDeptDTO [cpf=1733332162, enome=Tulio Vidal, dnome=Ensino]
+EmpregadoDeptDTO [cpf=2434332222, enome=Aline Barros, dnome=Pesquisa]
+EmpregadoDeptDTO [cpf=4244435272, enome=Juliana Rodrigues, dnome=Ensino]
+```
+### This is the Second SQL Query implementation with ***LEFT JOIN***  
+
+```sql
+SELECT empregados.cpf, empregados.enome, departamentos.dnome
+FROM empregados
+INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)
+LEFT JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp)
+WHERE trabalha.cpf_emp IS null
+ORDER BY cpf
+```
+
+***EmpregadoRepository*** class implementation
+
+```java
+package com.devsuperior.uri2990.repositories;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.devsuperior.uri2990.dto.EmpregadoDeptDTO;
+import com.devsuperior.uri2990.entities.Empregado;
+import com.devsuperior.uri2990.projections.EmpregadoDeptProjection;
+
+public interface EmpregadoRepository extends JpaRepository<Empregado, Long> {
+
+	
+	@Query(nativeQuery = true, value = "SELECT empregados.cpf, empregados.enome, departamentos.dnome "
+			+ "FROM empregados "
+			+ "INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero) "
+			+ "WHERE empregados.cpf NOT IN ("
+			+ "	SELECT empregados.cpf "
+			+ "	FROM empregados "
+			+ "	INNER JOIN trabalha ON (trabalha.cpf_emp = empregados.cpf) "
+			+ ") "
+			+ "ORDER BY empregados.cpf")
+	List<EmpregadoDeptProjection> search1();
+
+	@Query(value = "SELECT new com.devsuperior.uri2990.dto.EmpregadoDeptDTO(obj.cpf, obj.enome, obj.departamento.dnome) "
+			+ "FROM Empregado obj "
+			+ "WHERE obj.cpf NOT IN ("
+			+ "	SELECT obj.cpf "
+			+ "	FROM Empregado obj "
+			+ "	INNER JOIN obj.projetosOndeTrabalha "
+			+ ") "
+			+ "ORDER BY obj.cpf")
+	List<EmpregadoDeptDTO> search2();
+	
+	@Query(nativeQuery = true, value = "SELECT empregados.cpf, empregados.enome, departamentos.dnome "
+			+ "FROM empregados "
+			+ "INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero) "
+			+ "LEFT JOIN trabalha ON (empregados.cpf = trabalha.cpf_emp) "
+			+ "WHERE trabalha.cpf_emp IS null "
+			+ "ORDER BY cpf")
+	List<EmpregadoDeptProjection> search3();
+}
+```
+***Uri2990Application*** class implementation
+
+```java
+package com.devsuperior.uri2990;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.devsuperior.uri2990.dto.EmpregadoDeptDTO;
+import com.devsuperior.uri2990.projections.EmpregadoDeptProjection;
+import com.devsuperior.uri2990.repositories.EmpregadoRepository;
+
+@SpringBootApplication
+public class Uri2990Application implements CommandLineRunner {
+
+	@Autowired
+	private EmpregadoRepository repository;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(Uri2990Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		
+		List<EmpregadoDeptProjection> list = repository.search1();
+		List<EmpregadoDeptDTO> result1 = list.stream()
+				.map(x -> new EmpregadoDeptDTO(x)).collect(Collectors.toList());
+		
+		System.out.println("\n*** RESULT SQL PROJECTION NOT IN");
+		for (EmpregadoDeptDTO obj : result1) {
+			System.out.println(obj);
+		}
+		
+		System.out.println("\n\n");
+		
+		
+		System.out.println("\n*** RESULT JPQL");
+		List<EmpregadoDeptDTO> result2 = repository.search2();
+		for (EmpregadoDeptDTO obj : result2) {
+			System.out.println(obj);
+		}
+		
+		System.out.println("\n\n");
+		
+		List<EmpregadoDeptProjection> list3 = repository.search3();
+		List<EmpregadoDeptDTO> result3 = list3.stream()
+				.map(x -> new EmpregadoDeptDTO(x)).collect(Collectors.toList());
+		
+		System.out.println("\n*** RESULT SQL PROJECTION LEFT JOIN");
+		for (EmpregadoDeptDTO obj : result3) {
+			System.out.println(obj);
+		}
+		
+	}
+}
+```
+Result Application run
+
+```code
+Hibernate: 
+    SELECT
+        empregados.cpf,
+        empregados.enome,
+        departamentos.dnome 
+    FROM
+        empregados 
+    INNER JOIN
+        departamentos 
+            ON (
+                empregados.dnumero = departamentos.dnumero
+            ) 
+    WHERE
+        empregados.cpf NOT IN (
+            SELECT
+                empregados.cpf  
+            FROM
+                empregados  
+            INNER JOIN
+                trabalha 
+                    ON (
+                        trabalha.cpf_emp = empregados.cpf
+                    ) 
+            ) 
+    ORDER BY
+        empregados.cpf
+
+*** RESULT SQL PROJECTION NOT IN
+EmpregadoDeptDTO [cpf=1014332672, enome=Natalia Marques, dnome=Pesquisa]
+EmpregadoDeptDTO [cpf=1733332162, enome=Tulio Vidal, dnome=Ensino]
+EmpregadoDeptDTO [cpf=2434332222, enome=Aline Barros, dnome=Pesquisa]
+EmpregadoDeptDTO [cpf=4244435272, enome=Juliana Rodrigues, dnome=Ensino]
+
+
+
+
+*** RESULT JPQL
+Hibernate: 
+    select
+        empregado0_.cpf as col_0_0_,
+        empregado0_.enome as col_1_0_,
+        departamen1_.dnome as col_2_0_ 
+    from
+        empregados empregado0_ cross 
+    join
+        departamentos departamen1_ 
+    where
+        empregado0_.dnumero=departamen1_.dnumero 
+        and (
+            empregado0_.cpf not in  (
+                select
+                    empregado2_.cpf 
+                from
+                    empregados empregado2_ 
+                inner join
+                    trabalha projetoson3_ 
+                        on empregado2_.cpf=projetoson3_.cpf_emp 
+                inner join
+                    projetos projeto4_ 
+                        on projetoson3_.pnumero=projeto4_.pnumero
+                )
+            ) 
+    order by
+        empregado0_.cpf
+EmpregadoDeptDTO [cpf=1014332672, enome=Natalia Marques, dnome=Pesquisa]
+EmpregadoDeptDTO [cpf=1733332162, enome=Tulio Vidal, dnome=Ensino]
+EmpregadoDeptDTO [cpf=2434332222, enome=Aline Barros, dnome=Pesquisa]
+EmpregadoDeptDTO [cpf=4244435272, enome=Juliana Rodrigues, dnome=Ensino]
+
+
+
+Hibernate: 
+    SELECT
+        empregados.cpf,
+        empregados.enome,
+        departamentos.dnome 
+    FROM
+        empregados 
+    INNER JOIN
+        departamentos 
+            ON (
+                empregados.dnumero = departamentos.dnumero
+            ) 
+    LEFT JOIN
+        trabalha 
+            ON (
+                empregados.cpf = trabalha.cpf_emp
+            ) 
+    WHERE
+        trabalha.cpf_emp IS null 
+    ORDER BY
+        cpf
+
+*** RESULT SQL PROJECTION LEFT JOIN
 EmpregadoDeptDTO [cpf=1014332672, enome=Natalia Marques, dnome=Pesquisa]
 EmpregadoDeptDTO [cpf=1733332162, enome=Tulio Vidal, dnome=Ensino]
 EmpregadoDeptDTO [cpf=2434332222, enome=Aline Barros, dnome=Pesquisa]
