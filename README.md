@@ -4142,6 +4142,7 @@ public interface EmpregadoDeptProjection {
 	String getDnome();
 }
 ```
+#### SQL NATIVE QUERY implementation
 
 ***EmpregadoRepository*** interface implementation
 The code below shows SQL native query implementation
