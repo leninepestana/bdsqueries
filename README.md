@@ -4189,7 +4189,7 @@ To implement JPQL query I will start from native SQL code
 		+ "ORDER BY empregados.cpf")
 List<EmpregadoDeptProjection> search2();
 ```
-1st - First change the List ***EmpregadoDeptProjection*** to ***EmpregadoDeptDTO*** and employees reference to the class name and put an alias (obj) in this case
+1st - Change the List ***EmpregadoDeptProjection*** to ***EmpregadoDeptDTO*** and employees reference to the class name and put an alias (obj) in this case
 as like in the example below
 
 ```java
@@ -4204,7 +4204,7 @@ as like in the example below
 		+ "ORDER BY empregados.cpf")
 List<EmpregadoDeptDTO> search2();
 ```
-2nd and 3rd- Copy the complete path of **EmpregadoDeptDTO** and put it after the SELECT with the new clause
+2nd and 3rd - Copy the complete path of **EmpregadoDeptDTO** and put it after the SELECT with the new clause
 
 ```java
 com.devsuperior.uri2990.dto.EmpregadoDeptDTO;
