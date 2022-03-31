@@ -4227,3 +4227,28 @@ List<EmpregadoDeptDTO> search2();
 
 4th - The ***INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)***
  line will be excluded because once I browse the object with obj, I can get to ***obj.departamento.dnome***
+
+ ```java
+@Query(value = "SELECT new com.devsuperior.uri2990.dto.EmpregadoDeptDTO(obj.cpf, obj.enome, obj.departamento.dnome) "
+	+ "FROM Empregado obj "
+	+ "WHERE empregados.cpf NOT IN ("
+	+ "	SELECT empregados.cpf "
+	+ "	FROM empregados "
+	+ "	INNER JOIN trabalha ON (trabalha.cpf_emp = empregados.cpf) "
+	+ ") "
+	+ "ORDER BY empregados.cpf")
+List<EmpregadoDeptDTO> search2();
+```
+5th - Replace the employed ***empregados*** with obj and In the ***FROM empregados*** reference, put the ***Empregado*** class and an alias obj
+
+ ```java
+@Query(value = "SELECT new com.devsuperior.uri2990.dto.EmpregadoDeptDTO(obj.cpf, obj.enome, obj.departamento.dnome) "
+	+ "FROM Empregado obj "
+	+ "WHERE obj.cpf NOT IN ("
+	+ "	SELECT obj.cpf "
+	+ "	FROM Empregado obj "
+	+ "	INNER JOIN trabalha ON (trabalha.cpf_emp = obj.cpf) "
+	+ ") "
+	+ "ORDER BY obj.cpf")
+List<EmpregadoDeptDTO> search2();
+```
