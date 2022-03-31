@@ -4277,6 +4277,6 @@ The query should look like the above
 List<EmpregadoDeptDTO> search2();
 ```
 
-> *Important* note: In the second ***SELECT*** , it is not necessary to use an alias different from the obj, 
+> *Important note*: In the second ***SELECT*** , it is not necessary to use an alias different from the obj, 
 > because each query has its scope, and the first obj ends its scope in the first query. 
 > But I could have used Empregado emp for example, it would also work
