@@ -4226,4 +4226,4 @@ List<EmpregadoDeptDTO> search2();
 ```
 
 4th - The ***INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)***
- line will be excluded because once I browse the object with obj, I can get to obj.departamento.dnome
+ line will be excluded because once I browse the object with obj, I can get to ***obj.departamento.dnome***
