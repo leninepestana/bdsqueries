@@ -4211,15 +4211,16 @@ In the case of **departamentos.dnome**, it is necessary to navigate in the objec
 
 ```java
 @Query(value = "SELECT new com.devsuperior.uri2990.dto.EmpregadoDeptDTO(obj.cpf, obj.enome, obj.departamento.dnome) "
-		+ "FROM Empregado obj "
-		+ "INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero) "
-		+ "WHERE empregados.cpf NOT IN ("
-		+ "	SELECT empregados.cpf "
-		+ "	FROM empregados "
-		+ "	INNER JOIN trabalha ON (trabalha.cpf_emp = empregados.cpf) "
-		+ ") "
-		+ "ORDER BY empregados.cpf")
+	+ "FROM Empregado obj "
+	+ "INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero) "
+	+ "WHERE empregados.cpf NOT IN ("
+	+ "	SELECT empregados.cpf "
+	+ "	FROM empregados "
+	+ "	INNER JOIN trabalha ON (trabalha.cpf_emp = empregados.cpf) "
+	+ ") "
+	+ "ORDER BY empregados.cpf")
 List<EmpregadoDeptDTO> search2();
+```
 
 4th - The ***INNER JOIN departamentos ON (empregados.dnumero = departamentos.dnumero)***
  line will be excluded because once I browse the object with obj, I can get to obj.departamento.dnome
