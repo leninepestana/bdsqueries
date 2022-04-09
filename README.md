@@ -4693,3 +4693,7 @@ The project can be downloaded from the repository:
 I will create a new repository with the name of ***dscatalog-database-queries*** that will be hosted at:
 
 - https://github.com/leninepestana/dscatalog-database-queries to continue chapter 5
+
+I will continue the chapter in the same section where I ended it here:
+
+- 05-22 Preparing the End of Chapter 3 DSCatalog
