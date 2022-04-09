@@ -4684,7 +4684,7 @@ EmpregadoDeptDTO [cpf=4244435272, enome=Juliana Rodrigues, dnome=Ensino]
 ```
 ### 05-22 Preparing the End of Chapter 3 DSCatalog
 
-I will use the dscatalog project from the end of chapter
+I will use the dscatalog project from the end of chapter 3
 
 The project can be downloaded from the repository https://github.com/leninepestana?tab=repositories
 
